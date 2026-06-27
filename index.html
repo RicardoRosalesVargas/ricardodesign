@@ -1022,7 +1022,7 @@
     mDesc.innerText = projectData.desc;
     // Si el proyecto es el Showreel, inyectamos el botón
     if (projId === 'showreel') {
-        const btnHtml = '<button onclick="goToSectionO1()" class="mt-8 w-full py-3 border border-orange-500/50 text-orange-500 hover:bg-orange-500/20 hover:text-white transition-all uppercase tracking-widest text-sm font-bold aldrich-ui shadow-[0_0_10px_rgba(255,119,0,0.3)]">[ IR_A_SECCIÓN_SHOWREEL ]</button>';
+        const btnHtml = '<button onclick="goToSectionO1()" class="mt-8 w-full py-3 border border-orange-500/50 text-orange-500 hover:bg-orange-500/20 hover:text-white transition-all uppercase tracking-widest text-sm font-bold aldrich-ui shadow-[0_0_10px_rgba(255,119,0,0.3)]">IR_A_SECCIÓN_SHOWREEL</button>';
         mDesc.innerHTML += btnHtml;
     }
 }
@@ -1137,15 +1137,21 @@
             function animateBg() { offset += 0.25; if (offset > gridSpacing * 2) offset = 0; drawGrid(); updateAndDrawFloatingCodes(); requestAnimationFrame(animateBg); }
             window.addEventListener('resize', resizeBgCanvas); resizeBgCanvas(); animateBg();
         }
-        function goToSectionO1() {
-    // 1. Cerramos el modal
+       function goToSectionO1() {
+    // Cerramos modal
     document.getElementById('project-detail-modal').classList.remove('visible');
-    // 2. Cerramos la sección actual de Edición de Video
+    
+    // Cerramos sección Edición
     document.getElementById('close-btn').click();
-    // 3. Pequeño retraso para que la UI respire y luego saltamos a Showreel
+    
+    // Limpiamos estilos de bloqueo del body
+    document.body.style.overflow = 'auto';
+    document.body.classList.remove('section-open');
+
+    // Saltamos a Showreel
     setTimeout(() => {
         document.getElementById('panel-o1').click();
-    }, 500);
+    }, 400);
 }
     </script>
 </body>
