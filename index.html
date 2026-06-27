@@ -1018,10 +1018,12 @@
 
                             if (mLogId) mLogId.innerText = projectData.code;
                             if (mTitle) mTitle.innerText = projectData.title.toUpperCase();
-                            if (mDesc) {
+               if (mDesc) {
     mDesc.innerText = projectData.desc;
-    if (projectData.button) {
-        mDesc.innerHTML += projectData.button;
+    // Si el proyecto es el Showreel, inyectamos el botón
+    if (projId === 'showreel') {
+        const btnHtml = '<button onclick="goToSectionO1()" class="mt-8 w-full py-3 border border-orange-500/50 text-orange-500 hover:bg-orange-500/20 hover:text-white transition-all uppercase tracking-widest text-sm font-bold aldrich-ui shadow-[0_0_10px_rgba(255,119,0,0.3)]">[ IR_A_SECCIÓN_SHOWREEL ]</button>';
+        mDesc.innerHTML += btnHtml;
     }
 }
                             if (mHex) mHex.innerText = projectData.hex;
@@ -1135,6 +1137,16 @@
             function animateBg() { offset += 0.25; if (offset > gridSpacing * 2) offset = 0; drawGrid(); updateAndDrawFloatingCodes(); requestAnimationFrame(animateBg); }
             window.addEventListener('resize', resizeBgCanvas); resizeBgCanvas(); animateBg();
         }
+        function goToSectionO1() {
+    // 1. Cerramos el modal
+    document.getElementById('project-detail-modal').classList.remove('visible');
+    // 2. Cerramos la sección actual de Edición de Video
+    document.getElementById('close-btn').click();
+    // 3. Pequeño retraso para que la UI respire y luego saltamos a Showreel
+    setTimeout(() => {
+        document.getElementById('panel-o1').click();
+    }, 500);
+}
     </script>
 </body>
 </html>
