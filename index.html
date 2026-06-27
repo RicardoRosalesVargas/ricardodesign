@@ -958,12 +958,10 @@
                 });
             });
 
-            function closeSections() {
-                playSectionExit();
-                const activeSection = document.querySelector('.content-section.visible');
-                if (activeSection) {
-                    activeSection.classList.remove('visible');
-                }
+         function closeSections() {
+    playSectionExit();
+    document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; }); // PÉGALO AQUÍ
+    const activeSection = document.querySelector('.content-section.visible');
                 setTimeout(() => {
                     document.body.classList.remove('section-open');
                     mainMenu.classList.remove('panel-active');
@@ -1079,10 +1077,9 @@
 
             // --- Lógica centralizada para cerrar el modal ---
             function closeProjectModal() {
-                playModalExit();
-                if (projectModal) projectModal.classList.remove('visible');
-                const activeSection = document.querySelector('.content-section.visible');
-                if (activeSection) activeSection.style.overflowY = 'auto';
+    playModalExit();
+    document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; }); // PÉGALO AQUÍ
+    if (projectModal) projectModal.classList.remove('visible');
             }
 
             // Cierre con el botón "Desconectar Sesión"
@@ -1138,17 +1135,18 @@
             window.addEventListener('resize', resizeBgCanvas); resizeBgCanvas(); animateBg();
         }
        function goToSectionO1() {
-    // Cerramos modal
+    // 1. Cerrar UI modal
     document.getElementById('project-detail-modal').classList.remove('visible');
     
-    // Cerramos sección Edición
+    // 2. Limpiar estilos forzados en body y html
+    document.body.classList.remove('section-open');
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    
+    // 3. Cerrar sección actual
     document.getElementById('close-btn').click();
     
-    // Limpiamos estilos de bloqueo del body
-    document.body.style.overflow = 'auto';
-    document.body.classList.remove('section-open');
-
-    // Saltamos a Showreel
+    // 4. Salto a sección Showreel
     setTimeout(() => {
         document.getElementById('panel-o1').click();
     }, 400);
