@@ -833,22 +833,21 @@
                     hex: "ALGORITHM: HIGH_HOOK\nSTATUS: BROADCAST", accent: "orange"
                 },
                 showreel: {
-    title: "Showreel Corporativo y Creativo",
-    code: "[ ID_ARCHIVO // SHOWREEL_AE ]",
-    desc: "Diseño, dirección e integración integral de Showreel, implementando técnicas avanzadas de sincronización rítmica, animación vectorial interactiva por capas y composición en After Effects. Desarrollado bajo un enfoque estratégico de retención de audiencia para formatos digitales.",
-    media: [
-        { type: "image", src: "img/showreel_thumbnail.png" },
-        { type: "image", src: "img/showreel_evidencia_02.png" }
-    ],
-    evidence: "Concluido (Archivo de video activo y enlace a YouTube)", tools: "After Effects, Illustrator",
-    skills: [
-        "Ritmo y Sincronización: Edición precisa al compás del beat de la música de fondo.",
-        "Estructura de Retención: Diseño de ganchos (hooks) visuales efectivos en los primeros 3 segundos de reproducción.",
-        "Animación Core: Interpolación de movimiento por capas de ilustración vectorial y transiciones dinámicas."
-    ],
-    hex: "ENGINE: AFTER_EFFECTS\nSTATUS: COMPILED", accent: "orange",
-    button: '<button onclick="document.getElementById(\'modal-close-btn\').click(); document.querySelector(\'[data-target=\\\'o1\\\']\').click();" class="mt-6 w-full py-3 border border-orange-500/50 text-orange-500 hover:bg-orange-500/20 hover:text-white transition-all uppercase tracking-widest text-sm font-bold aldrich-ui shadow-[0_0_10px_rgba(255,119,0,0.3)]">[ IR_A_SECCIÓN_SHOWREEL ]</button>'
-},
+                    title: "Showreel Corporativo y Creativo",
+                    code: "[ ID_ARCHIVO // SHOWREEL_AE ]",
+                    desc: "Diseño, dirección e integración integral de Showreel, implementando técnicas avanzadas de sincronización rítmica, animación vectorial interactiva por capas y composición en After Effects. Desarrollado bajo un enfoque estratégico de retención de audiencia para formatos digitales.",
+                    media: [
+                        { type: "image", src: "img/showreel_thumbnail.png" },
+                        { type: "image", src: "img/showreel_evidencia_02.png" }
+                    ],
+                    evidence: "Concluido (Archivo de video activo y enlace a YouTube)", tools: "After Effects, Illustrator",
+                    skills: [
+                        "Ritmo y Sincronización: Edición precisa al compás del beat de la música de fondo.",
+                        "Estructura de Retención: Diseño de ganchos (hooks) visuales efectivos en los primeros 3 segundos de reproducción.",
+                        "Animación Core: Interpolación de movimiento por capas de ilustración vectorial y transiciones dinámicas."
+                    ],
+                    hex: "ENGINE: AFTER_EFFECTS\nSTATUS: COMPILED", accent: "orange"
+                },
                 aftereffects: {
                     title: "Motion Graphics - After Effects",
                     code: "[ ID_ARCHIVO // MOTION_AE ]",
@@ -958,17 +957,18 @@
                 });
             });
 
-         function closeSections() {
-        playSectionExit();
-        stopAllVideos(); // <--- DETIENE VIDEO AL SALIR
-        const activeSection = document.querySelector('.content-section.visible');
-        if (activeSection) activeSection.classList.remove('visible');
-        setTimeout(() => {
-            document.body.classList.remove('section-open');
-            mainMenu.classList.remove('panel-active');
-            panels.forEach(p => p.classList.remove('active-panel'));
-        }, 400);
-    }
+            function closeSections() {
+                playSectionExit();
+                const activeSection = document.querySelector('.content-section.visible');
+                if (activeSection) {
+                    activeSection.classList.remove('visible');
+                }
+                setTimeout(() => {
+                    document.body.classList.remove('section-open');
+                    mainMenu.classList.remove('panel-active');
+                    panels.forEach(p => p.classList.remove('active-panel'));
+                }, 400);
+            }
             if (closeBtn) closeBtn.addEventListener('click', closeSections);
 
             if (projectCards && projectCards.length > 0) {
@@ -1017,14 +1017,7 @@
 
                             if (mLogId) mLogId.innerText = projectData.code;
                             if (mTitle) mTitle.innerText = projectData.title.toUpperCase();
-               if (mDesc) {
-    mDesc.innerText = projectData.desc;
-    // Si el proyecto es el Showreel, inyectamos el botón
-    if (projId === 'showreel') {
-        const btnHtml = '<button onclick="goToSectionO1()" class="mt-8 w-full py-3 border border-orange-500/50 text-orange-500 hover:bg-orange-500/20 hover:text-white transition-all uppercase tracking-widest text-sm font-bold aldrich-ui shadow-[0_0_10px_rgba(255,119,0,0.3)]">IR_A_SHOWREEL</button>';
-        mDesc.innerHTML += btnHtml;
-    }
-}
+                            if (mDesc) mDesc.innerText = projectData.desc;
                             if (mHex) mHex.innerText = projectData.hex;
                             if (mEvidence) mEvidence.innerText = projectData.evidence;
                             if (mTools) mTools.innerText = projectData.tools;
@@ -1077,12 +1070,12 @@
             }
 
             // --- Lógica centralizada para cerrar el modal ---
-          function closeProjectModal() {
-        playModalExit();
-        stopAllVideos(); // <--- DETIENE VIDEO AL CERRAR MODAL
-        if (projectModal) projectModal.classList.remove('visible');
-        const activeSection = document.querySelector('.content-section.visible');
-        if (activeSection) activeSection.style.overflowY = 'auto';
+            function closeProjectModal() {
+                playModalExit();
+                if (projectModal) projectModal.classList.remove('visible');
+                const activeSection = document.querySelector('.content-section.visible');
+                if (activeSection) activeSection.style.overflowY = 'auto';
+            }
 
             // Cierre con el botón "Desconectar Sesión"
             if (modalCloseBtn) {
@@ -1136,23 +1129,6 @@
             function animateBg() { offset += 0.25; if (offset > gridSpacing * 2) offset = 0; drawGrid(); updateAndDrawFloatingCodes(); requestAnimationFrame(animateBg); }
             window.addEventListener('resize', resizeBgCanvas); resizeBgCanvas(); animateBg();
         }
-       function goToSectionO1() {
-    // 1. Cerrar UI modal
-    document.getElementById('project-detail-modal').classList.remove('visible');
-    
-    // 2. Limpiar estilos forzados en body y html
-    document.body.classList.remove('section-open');
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
-    
-    // 3. Cerrar sección actual
-    document.getElementById('close-btn').click();
-    
-    // 4. Salto a sección Showreel
-    setTimeout(() => {
-        document.getElementById('panel-o1').click();
-    }, 400);
-}
     </script>
 </body>
 </html>
