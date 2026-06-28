@@ -959,15 +959,16 @@
             });
 
          function closeSections() {
-    playSectionExit();
-    document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; }); // PÉGALO AQUÍ
-    const activeSection = document.querySelector('.content-section.visible');
-                setTimeout(() => {
-                    document.body.classList.remove('section-open');
-                    mainMenu.classList.remove('panel-active');
-                    panels.forEach(p => p.classList.remove('active-panel'));
-                }, 400);
-            }
+        playSectionExit();
+        stopAllVideos(); // <--- DETIENE VIDEO AL SALIR
+        const activeSection = document.querySelector('.content-section.visible');
+        if (activeSection) activeSection.classList.remove('visible');
+        setTimeout(() => {
+            document.body.classList.remove('section-open');
+            mainMenu.classList.remove('panel-active');
+            panels.forEach(p => p.classList.remove('active-panel'));
+        }, 400);
+    }
             if (closeBtn) closeBtn.addEventListener('click', closeSections);
 
             if (projectCards && projectCards.length > 0) {
@@ -1076,11 +1077,12 @@
             }
 
             // --- Lógica centralizada para cerrar el modal ---
-            function closeProjectModal() {
-    playModalExit();
-    document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; }); // PÉGALO AQUÍ
-    if (projectModal) projectModal.classList.remove('visible');
-            }
+          function closeProjectModal() {
+        playModalExit();
+        stopAllVideos(); // <--- DETIENE VIDEO AL CERRAR MODAL
+        if (projectModal) projectModal.classList.remove('visible');
+        const activeSection = document.querySelector('.content-section.visible');
+        if (activeSection) activeSection.style.overflowY = 'auto';
 
             // Cierre con el botón "Desconectar Sesión"
             if (modalCloseBtn) {
