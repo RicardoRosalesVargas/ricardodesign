@@ -19,220 +19,442 @@
             --glow-magenta: rgba(255, 0, 255, 0.85);
             --glow-orange: rgba(255, 119, 0, 0.85);
             --glow-blue: rgba(0, 162, 255, 0.85);
-            --glow-color: #00ffff;
+            --glow-color: #00ffff; /* Cambiado dinámicamente vía JS */
         }
 
         body {
             background-color: #050508;
             color: #e5e7eb;
-            font-family: 'Tektur', sans-serif !important;
+            font-family: 'Tektur', sans-serif !important; /* Tektur como base absoluta */
             font-weight: 300;
             overflow: hidden; 
         }
 
+        /* Títulos mayores con Orbitron */
         h1, .orbitron-title {
             font-family: 'Orbitron', sans-serif !important;
             font-weight: 700;
             text-transform: uppercase;
         }
 
+        /* Títulos de paneles e interfaces secundarias con Aldrich */
         .aldrich-ui {
             font-family: 'Aldrich', sans-serif !important;
         }
 
+        /* Fuerza Tektur en cualquier elemento de texto, cuerpo, listas y encabezados de tarjeta */
         body, p, span, li, button, select, h2, h3, h4, h5, h6, a {
             font-family: 'Tektur', sans-serif !important;
         }
 
+        /* Excepto bloques de código que usan estrictamente Courier New */
         pre, code, .matrix-code {
             font-family: 'Courier New', Courier, monospace !important;
         }
 
         /* --- Personalización de Barras de Scroll Cyberpunk --- */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #08080c; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08080c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
 
         /* --- Efecto de líneas de escaneo CRT --- */
         #scanline-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 1px, rgba(255, 255, 255, 0.05) 2px, rgba(255, 255, 255, 0.05) 3px);
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0) 0px,
+                rgba(0, 0, 0, 0) 1px,
+                rgba(255, 255, 255, 0.05) 2px,
+                rgba(255, 255, 255, 0.05) 3px
+            );
             animation: scanline-flicker 15s linear infinite;
             z-index: 999;
         }
 
         @keyframes scanline-flicker {
-            0% { opacity: 0.95; } 5% { opacity: 0.85; } 10% { opacity: 0.98; } 15% { opacity: 0.9; } 100% { opacity: 0.95; }
+            0% { opacity: 0.95; }
+            5% { opacity: 0.85; }
+            10% { opacity: 0.98; }
+            15% { opacity: 0.9; }
+            100% { opacity: 0.95; }
         }
 
         /* --- Ruido estático analógico --- */
         #grain-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.012; pointer-events: none; z-index: 998;
+            opacity: 0.012; 
+            pointer-events: none;
+            z-index: 998;
         }
 
-        /* --- MENÚ PRINCIPAL --- */
+        /* --- MENÚ PRINCIPAL E INTERFAZ SMOOTH DE INUNDACIÓN --- */
         #main-menu {
-            display: flex; height: 100vh; width: 100vw;
+            display: flex;
+            height: 100vh;
+            width: 100vw;
             transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            border-left: 1px solid #101018; position: relative; z-index: 20;
+            border-left: 1px solid #101018;
+            position: relative;
+            z-index: 20;
         }
 
+        /* Estilo base de los paneles */
         .panel {
-            flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative; overflow: hidden;
+            position: relative;
+            overflow: hidden;
             border-right: 1px solid #101018;
-            background-color: rgba(8, 8, 12, 0.85); backdrop-filter: blur(8px);
+            background-color: rgba(8, 8, 12, 0.85);
+            backdrop-filter: blur(8px);
         }
         
-        #main-menu:not(.panel-active):hover .panel { flex: 0.7; }
-        #main-menu:not(.panel-active):hover .panel:hover { flex: 2.3; background-color: rgba(12, 12, 20, 0.92); }
+        #main-menu:not(.panel-active):hover .panel {
+            flex: 0.7;
+        }
 
+        #main-menu:not(.panel-active):hover .panel:hover {
+            flex: 2.3;
+            background-color: rgba(12, 12, 20, 0.92);
+        }
+
+        /* --- Animación de Expansión de Panel (Inundación de Pantalla) --- */
         #main-menu.panel-active .panel {
-            flex: 0 0 0%; width: 0; opacity: 0; border-right-width: 0px; pointer-events: none;
+            flex: 0 0 0%;
+            width: 0;
+            opacity: 0;
+            border-right-width: 0px;
+            pointer-events: none;
         }
 
         #main-menu.panel-active .panel.active-panel {
-            flex: 1 0 100%; width: 100vw; opacity: 1; pointer-events: auto; background-color: #050508;
+            flex: 1 0 100%;
+            width: 100vw;
+            opacity: 1;
+            pointer-events: auto;
+            background-color: #050508; /* Iguala al fondo para transicionar invisiblemente */
         }
 
+        /* La letra se expande, se difumina y desaparece simulando inundación */
         #main-menu.panel-active .panel.active-panel .panel-letter {
-            transform: scale(3.5); opacity: 0; filter: blur(20px);
+            transform: scale(3.5);
+            opacity: 0;
+            filter: blur(20px);
             transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
         }
 
+        /* Letra principal glitch/neon */
         .panel-letter {
-            font-family: 'Orbitron', sans-serif !important; font-size: clamp(8rem, 14vw, 14rem);
+            font-family: 'Orbitron', sans-serif !important; /* Forzamos Orbitron en las letras gigantes R-N-R-V */
+            font-size: clamp(8rem, 14vw, 14rem);
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.3s ease;
             animation: neon-chroma 5.5s infinite linear;
         }
 
+        /* Restauración de los colores neón individuales por sección */
         #panel-b .panel-letter, #panel-b .panel-title { color: #00ffff; }
         #panel-o1 .panel-letter, #panel-o1 .panel-title { color: #ff00ff; }
         #panel-g .panel-letter, #panel-g .panel-title { color: #ff7700; }
         #panel-o2 .panel-letter, #panel-o2 .panel-title { color: #00a2ff; }
 
         .panel-title {
-            font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.15em;
-            opacity: 0; transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-            position: absolute; bottom: 12%; white-space: nowrap; transform: translateY(10px);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            position: absolute;
+            bottom: 12%;
+            white-space: nowrap;
+            transform: translateY(10px);
         }
 
-        .panel:hover .panel-title { opacity: 0.95; transform: translateY(0); }
+        .panel:hover .panel-title {
+            opacity: 0.95;
+            transform: translateY(0);
+        }
+
         .panel:hover .panel-letter {
-            transform: scale(1.08); animation-duration: 2.2s; 
+            transform: scale(1.08);
+            animation-duration: 2.2s; 
             filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 2px rgba(255, 255, 255, 0.4)); 
         }
 
+        /* Animación de aberración cromática con glow recalibrado */
         @keyframes neon-chroma {
             0%, 8%, 12%, 48%, 52%, 80%, 84%, 100% {
-                text-shadow: 0 0 5px currentColor, 0 0 13px currentColor, 0 0 20px rgba(255, 255, 255, 0.25), 3px 2px 1px rgba(255, 0, 0, 0.8), -3px -2px 1px rgba(0, 255, 255, 0.8); 
-                transform: scale(1) skewX(0deg); filter: drop-shadow(0 0 3px currentColor);
+                text-shadow: 
+                    0 0 5px currentColor, 
+                    0 0 13px currentColor, 
+                    0 0 20px rgba(255, 255, 255, 0.25),
+                    3px 2px 1px rgba(255, 0, 0, 0.8),   
+                    -3px -2px 1px rgba(0, 255, 255, 0.8); 
+                transform: scale(1) skewX(0deg);
+                filter: drop-shadow(0 0 3px currentColor);
             }
             9% {
-                text-shadow: 0 0 6px currentColor, 0 0 18px currentColor, 0 0 28px rgba(255, 255, 255, 0.3), -7px -3px 2px rgba(255, 0, 0, 0.9), 7px 3px 2px rgba(0, 255, 255, 0.9);
+                text-shadow: 
+                    0 0 6px currentColor, 
+                    0 0 18px currentColor, 
+                    0 0 28px rgba(255, 255, 255, 0.3),
+                    -7px -3px 2px rgba(255, 0, 0, 0.9),   
+                    7px 3px 2px rgba(0, 255, 255, 0.9);
                 transform: scale(1.03) skewX(-2.5deg) translateY(-2px);
             }
             10% {
-                text-shadow: 0 0 3px currentColor, 0 0 8px currentColor, 4px 3px 1px rgba(255, 255, 0, 0.85), -4px -3px 1px rgba(255, 0, 255, 0.85);
+                text-shadow: 
+                    0 0 3px currentColor, 
+                    0 0 8px currentColor, 
+                    4px 3px 1px rgba(255, 255, 0, 0.85),   
+                    -4px -3px 1px rgba(255, 0, 255, 0.85);
                 transform: scale(0.98) skewX(3.5deg) translateY(2px);
             }
             11% {
-                text-shadow: 0 0 4px currentColor, 0 0 10px currentColor, 2px -1px 2px rgba(255, 0, 0, 0.75), -2px 1px 2px rgba(0, 255, 255, 0.75);
+                text-shadow: 
+                    0 0 4px currentColor, 
+                    0 0 10px currentColor,
+                    2px -1px 2px rgba(255, 0, 0, 0.75),
+                    -2px 1px 2px rgba(0, 255, 255, 0.75);
                 transform: scale(1) skewX(0deg);
             }
             50% {
-                text-shadow: 0 0 9px currentColor, 0 0 22px currentColor, 0 0 32px rgba(255, 255, 255, 0.35), -8px 2px 2px rgba(255, 0, 0, 0.9), 8px -2px 2px rgba(0, 255, 255, 0.9), 0 0 4px rgba(255, 255, 0, 0.3);
-                transform: scale(1.04) skewY(1.5deg); filter: drop-shadow(0 0 6px currentColor);
+                text-shadow: 
+                    0 0 9px currentColor, 
+                    0 0 22px currentColor, 
+                    0 0 32px rgba(255, 255, 255, 0.35),
+                    -8px 2px 2px rgba(255, 0, 0, 0.9),
+                    8px -2px 2px rgba(0, 255, 255, 0.9),
+                    0 0 4px rgba(255, 255, 0, 0.3);
+                transform: scale(1.04) skewY(1.5deg);
+                filter: drop-shadow(0 0 6px currentColor);
             }
             51% {
-                text-shadow: 0 0 4px currentColor, 5px -2px 1px rgba(255, 0, 128, 0.85), -5px 2px 1px rgba(0, 255, 255, 0.85);
+                text-shadow: 
+                    0 0 4px currentColor, 
+                    5px -2px 1px rgba(255, 0, 128, 0.85),
+                    -5px 2px 1px rgba(0, 255, 255, 0.85);
                 transform: scale(0.99) skewX(-1.5deg);
             }
             82% {
-                text-shadow: 0 0 12px currentColor, 0 0 24px rgba(255, 255, 255, 0.25), -6px -3px 2px rgba(255, 0, 0, 0.85), 6px 3px 2px rgba(0, 255, 255, 0.85);
+                text-shadow: 
+                    0 0 12px currentColor, 
+                    0 0 24px rgba(255, 255, 255, 0.25),
+                    -6px -3px 2px rgba(255, 0, 0, 0.85),
+                    6px 3px 2px rgba(0, 255, 255, 0.85);
                 transform: scale(1.01) skewX(4deg) translateY(-1px);
             }
         }
 
+        /* --- RESTAURADO DE SECCIONES (Fijación de comportamiento para evitar mezcla) --- */
         .content-section {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none;
-            overflow-y: auto; padding: 8rem 2rem 4rem 2rem; transform: translateY(40px);
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            overflow-y: auto;
+            padding: 8rem 2rem 4rem 2rem;
+            transform: translateY(40px);
             transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 50;
         }
 
         body.section-open #main-menu {
-            opacity: 0; transform: scale(0.95); pointer-events: none; visibility: hidden;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            visibility: hidden;
             transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.6s;
         }
-        body.section-open { overflow: hidden; }
-        .content-section.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
 
+        body.section-open {
+            overflow: hidden; /* Detiene scroll de fondo */
+        }
+
+        .content-section.visible {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        /* --- Botón de Terminación de Sesión Táctico --- */
         #close-btn {
-            position: fixed; top: 30px; right: 30px; z-index: 150;
-            background: rgba(10, 10, 15, 0.8); backdrop-filter: blur(12px); color: #ff3333;
-            border: 1px solid rgba(255, 51, 51, 0.4); font-family: 'Aldrich', sans-serif !important;
-            font-size: 0.8rem; letter-spacing: 0.12em; padding: 0.6rem 1.4rem; border-radius: 4px;
-            opacity: 0; pointer-events: none; transform: scale(0.8); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 150;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(12px);
+            color: #ff3333;
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            font-family: 'Aldrich', sans-serif !important;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            padding: 0.6rem 1.4rem;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 0 12px rgba(255, 51, 51, 0.2);
         }
-        body.section-open #close-btn { opacity: 1; pointer-events: all; transform: scale(1); }
-        #close-btn:hover { background: rgba(255, 51, 51, 0.2); border-color: #ff3333; box-shadow: 0 0 20px rgba(255, 51, 51, 0.5), inset 0 0 8px rgba(255, 51, 51, 0.2); text-shadow: 0 0 8px #ff3333; }
+        body.section-open #close-btn {
+            opacity: 1;
+            pointer-events: all;
+            transform: scale(1);
+        }
+        #close-btn:hover {
+            background: rgba(255, 51, 51, 0.2);
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5), inset 0 0 8px rgba(255, 51, 51, 0.2);
+            text-shadow: 0 0 8px #ff3333;
+        }
 
+        /* --- REVELADO SECUENCIAL HOLOGRÁFICO --- */
         @keyframes holo-reveal-fade {
-            0% { opacity: 0; transform: scale(0.96) translateY(25px); filter: brightness(2) drop-shadow(0 0 15px var(--glow-color)); }
-            60% { opacity: 0.85; filter: brightness(1.3) drop-shadow(0 0 8px var(--glow-color)); }
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1) drop-shadow(0 0 0 transparent); }
+            0% {
+                opacity: 0;
+                transform: scale(0.96) translateY(25px);
+                filter: brightness(2) drop-shadow(0 0 15px var(--glow-color));
+            }
+            60% {
+                opacity: 0.85;
+                filter: brightness(1.3) drop-shadow(0 0 8px var(--glow-color));
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: brightness(1) drop-shadow(0 0 0 transparent);
+            }
         }
 
-        .holo-reveal-item { opacity: 0; will-change: transform, opacity, filter; }
-        .visible .holo-reveal-item { animation: holo-reveal-fade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .visible .delay-1 { animation-delay: 0.05s; } .visible .delay-2 { animation-delay: 0.15s; }
-        .visible .delay-3 { animation-delay: 0.25s; } .visible .delay-4 { animation-delay: 0.35s; }
-        .visible .delay-5 { animation-delay: 0.45s; } .visible .delay-6 { animation-delay: 0.55s; }
+        .holo-reveal-item {
+            opacity: 0;
+            will-change: transform, opacity, filter;
+        }
 
+        .visible .holo-reveal-item {
+            animation: holo-reveal-fade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* CORRECCIÓN: Tiempos de retraso escalonados (Stagger) de forma ultra limpia y coordinada */
+        .visible .delay-1 { animation-delay: 0.05s; }
+        .visible .delay-2 { animation-delay: 0.15s; }
+        .visible .delay-3 { animation-delay: 0.25s; }
+        .visible .delay-4 { animation-delay: 0.35s; }
+        .visible .delay-5 { animation-delay: 0.45s; }
+        .visible .delay-6 { animation-delay: 0.55s; }
+
+        /* --- Componentes de UI Interna --- */
         .project-card {
-            border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(10, 10, 16, 0.7);
-            backdrop-filter: blur(12px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
-            position: relative; cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 16, 0.7);
+            backdrop-filter: blur(12px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.4s ease, 
+                        box-shadow 0.4s ease;
+            position: relative;
+            cursor: pointer;
         }
-        .project-card-orange:hover { border-color: #ff7700; box-shadow: 0 0 15px rgba(255, 119, 0, 0.25), inset 0 0 6px rgba(255, 119, 0, 0.15); transform: translateY(-6px); }
-        .project-card-blue:hover { border-color: #00a2ff; box-shadow: 0 0 15px rgba(0, 162, 255, 0.25), inset 0 0 6px rgba(0, 162, 255, 0.15); transform: translateY(-6px); }
+        
+        .project-card-orange:hover {
+            border-color: #ff7700;
+            box-shadow: 0 0 15px rgba(255, 119, 0, 0.25), inset 0 0 6px rgba(255, 119, 0, 0.15);
+            transform: translateY(-6px);
+        }
+        .project-card-blue:hover {
+            border-color: #00a2ff;
+            box-shadow: 0 0 15px rgba(0, 162, 255, 0.25), inset 0 0 6px rgba(0, 162, 255, 0.15);
+            transform: translateY(-6px);
+        }
 
+        /* --- MODAL DETALLES MULTIMEDIA (Alineado con tu estética Cyberpunk) --- */
         .project-detail-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(4, 4, 6, 0.98); backdrop-filter: blur(25px); z-index: 250; 
-            display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none;
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh;
+            background: rgba(4, 4, 6, 0.98); 
+            backdrop-filter: blur(25px);
+            z-index: 250; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            opacity: 0; 
+            pointer-events: none;
             transition: opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        .project-detail-overlay.visible { opacity: 1; pointer-events: all; }
+        .project-detail-overlay.visible { 
+            opacity: 1; 
+            pointer-events: all; 
+        }
 
         #modal-container { 
-            max-height: 90vh; overflow-y: auto; position: relative; 
-            transform: scale(0.85) rotateX(12deg) translateY(30px); opacity: 0; filter: blur(8px) brightness(2);
-            clip-path: inset(0 50% 0 50%);
-            transition: transform 0.65s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.65s cubic-bezier(0.19, 1, 0.22, 1), filter 0.65s cubic-bezier(0.19, 1, 0.22, 1), clip-path 0.65s cubic-bezier(0.19, 1, 0.22, 1);
+            max-height: 90vh; 
+            overflow-y: auto; 
+            position: relative; 
+            transform: scale(0.85) rotateX(12deg) translateY(30px);
+            opacity: 0;
+            filter: blur(8px) brightness(2);
+            clip-path: inset(0 50% 0 50%); /* Apertura de rendija de iris vertical */
+            transition: transform 0.65s cubic-bezier(0.19, 1, 0.22, 1), 
+                        opacity 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+                        filter 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+                        clip-path 0.65s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: transform, opacity, filter, clip-path;
         }
-        .project-detail-overlay.visible #modal-container { transform: scale(1) rotateX(0deg) translateY(0); opacity: 1; filter: blur(0px) brightness(1); clip-path: inset(0 0 0 0); }
+        
+        .project-detail-overlay.visible #modal-container {
+            transform: scale(1) rotateX(0deg) translateY(0);
+            opacity: 1;
+            filter: blur(0px) brightness(1);
+            clip-path: inset(0 0 0 0); /* Se expande hacia los lados de forma pro */
+        }
+
         @keyframes pulse-fast { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; filter: drop-shadow(0 0 4px currentColor); } }
         .scan-pulse { animation: pulse-fast 2s infinite ease-in-out; }
 
-        /* --- Efecto de Boot --- */
+        /* --- Efecto de Boot (Carga Inicial Cyberpunk) --- */
         #page-loader {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #050508;
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
-            animation: fade-out-loader 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; animation-delay: 1.8s;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #050508;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fade-out-loader 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1.8s;
         }
+
         .loader-text {
-            font-family: 'Courier New', Courier, monospace; color: #00ffff; font-size: 1rem;
-            font-weight: bold; letter-spacing: 0.3em; text-transform: uppercase;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ffff;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
             animation: text-glitch-load 1.5s infinite;
         }
+
         @keyframes text-glitch-load {
             0%, 100% { opacity: 1; transform: translateX(0); filter: none; text-shadow: 0 0 8px rgba(0,255,255,0.6); }
             20% { opacity: 0.8; transform: translateX(-3px); text-shadow: 3px 0 red, -3px 0 cyan; }
@@ -241,28 +463,48 @@
             60% { opacity: 1; transform: translateX(0); text-shadow: 0 0 15px rgba(0,255,255,1); }
             80% { opacity: 0.5; }
         }
+
         @keyframes fade-out-loader {
-            0% { opacity: 1; filter: blur(0); } 50% { opacity: 1; filter: blur(10px); }
+            0% { opacity: 1; filter: blur(0); }
+            50% { opacity: 1; filter: blur(10px); }
             100% { opacity: 0; visibility: hidden; pointer-events: none; filter: blur(20px); }
         }
     </style>
 </head>
 <body>
 
-    <div id="page-loader"><div class="loader-text">[ INICIANDO_SISTEMA_RNRV ]</div></div>
+    <!-- PANTALLA DE CARGA / BOOT SEQUENCE -->
+    <div id="page-loader">
+        <div class="loader-text">[ INICIANDO_SISTEMA_RNRV ]</div>
+    </div>
+
     <canvas id="background-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
     <div id="scanline-overlay"></div>
     <div id="grain-overlay"></div>
+
     <button id="close-btn">[ TERMINAR_SESIÓN // ESC ]</button>
 
     <!-- MENÚ PRINCIPAL -->
     <div id="main-menu">
-        <div id="panel-b" class="panel" data-target="b"><span class="panel-letter">R</span><span class="panel-title text-cyan-400">Perfil</span></div>
-        <div id="panel-o1" class="panel" data-target="o1"><span class="panel-letter">N</span><span class="panel-title text-pink-500">Showreel</span></div>
-        <div id="panel-g" class="panel" data-target="g"><span class="panel-letter">R</span><span class="panel-title text-orange-500">Edición de Video</span></div>
-        <div id="panel-o2" class="panel" data-target="o2"><span class="panel-letter">V</span><span class="panel-title text-blue-500">Otros Proyectos</span></div>
+        <div id="panel-b" class="panel" data-target="b">
+            <span class="panel-letter">R</span>
+            <span class="panel-title text-cyan-400">Perfil</span>
+        </div>
+        <div id="panel-o1" class="panel" data-target="o1">
+            <span class="panel-letter">N</span>
+            <span class="panel-title text-pink-500">Showreel</span>
+        </div>
+        <div id="panel-g" class="panel" data-target="g">
+            <span class="panel-letter">R</span>
+            <span class="panel-title text-orange-500">Edición de Video</span>
+        </div>
+        <div id="panel-o2" class="panel" data-target="o2">
+            <span class="panel-letter">V</span>
+            <span class="panel-title text-blue-500">Otros Proyectos</span>
+        </div>
     </div>
 
+    <!-- SECCIONES DE CONTENIDO -->
     <main>
         <!-- SECCIÓN R: PERFIL -->
         <section id="b" class="content-section">
@@ -270,7 +512,8 @@
                 <h1 class="text-cyan-400 font-bold tracking-widest text-3xl mb-6 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.3);">RNRV // PERFIL</h1>
                 <div class="grid md:grid-cols-3 gap-8 items-center holo-reveal-item delay-2">
                     <div class="md:col-span-1 flex justify-center">
-                        <img src="img/avatar_perfil.jpg" alt="Ricardo Rosales" class="rounded border border-cyan-500/40 shadow-lg shadow-cyan-500/20" onerror="this.src='https://placehold.co/400x400/1a1a1a/00ffff?text=Avatar'">
+                        <!-- RUTA OPTIMIZADA: Foto de perfil principal -->
+                        <img src="img/avatar_perfil.jpg" alt="Ricardo Rosales" class="rounded border border-cyan-500/40 shadow-lg shadow-cyan-500/20">
                     </div>
                     <div class="md:col-span-2">
                         <h2 class="text-3xl font-semibold tracking-wider text-white uppercase mb-1">Ricardo Rosales</h2>
@@ -280,16 +523,33 @@
                         <p class="mb-6 text-sm"><strong class="text-cyan-400 text-xs font-medium">// Firma:</strong> Sistemas Multimedia</p>
                         
                         <div class="flex items-center space-x-6 mt-6">
-                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="Correo"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
-                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="Instagram"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44c-3.116 0-3.483.01-4.702.066-2.73.124-4.123 1.513-4.248 4.248C3.01 9.096 3 9.463 3 12.001s.01 2.904.066 4.123c.124 2.735 1.513 4.123 4.248 4.248 1.218.056 1.585.066 4.702.066 3.116 0 3.482-.01 4.702-.066 2.735-.124 4.123-1.513 4.248-4.248.056-1.218.066-1.585.066-4.702 0-3.116-.01-3.482-.066-4.702-.124-2.734-1.513-4.248-4.248C15.483 3.613 15.116 3.603 12 3.603zm0 3.088c-2.953 0-5.334 2.38-5.334 5.332s2.381 5.332 5.334 5.332 5.334-2.38 5.334-5.332c0-2.952-2.38-5.332-5.334-5.332zm0 8.747c-1.894 0-3.414-1.52-3.414-3.414s1.52-3.414 3.414-3.414 3.414 1.52 3.414 3.414c0 1.894-1.52 3.414-3.414 3.414zm4.248-8.24c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25c0-.69-.56-1.25-1.25-1.25z"/></svg></a>
+                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="LinkedIn">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="Correo">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="Instagram">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.44c-3.116 0-3.483.01-4.702.066-2.73.124-4.123 1.513-4.248 4.248C3.01 9.096 3 9.463 3 12.001s.01 2.904.066 4.123c.124 2.735 1.513 4.123 4.248 4.248 1.218.056 1.585.066 4.702.066 3.116 0 3.482-.01 4.702-.066 2.735-.124 4.123-1.513 4.248-4.248.056-1.218.066-1.585.066-4.702 0-3.116-.01-3.482-.066-4.702-.124-2.734-1.513-4.248-4.248C15.483 3.613 15.116 3.603 12 3.603zm0 3.088c-2.953 0-5.334 2.38-5.334 5.332s2.381 5.332 5.334 5.332 5.334-2.38 5.334-5.332c0-2.952-2.38-5.332-5.334-5.332zm0 8.747c-1.894 0-3.414-1.52-3.414-3.414s1.52-3.414 3.414-3.414 3.414 1.52 3.414 3.414c0 1.894-1.52 3.414-3.414 3.414zm4.248-8.24c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25c0-.69-.56-1.25-1.25-1.25z"/></svg>
+                            </a>
                         </div>
                     </div>
                 </div>
+
+                <!-- Bloque de Información Migrado de Quién Soy -->
                 <div class="mt-8 pt-8 border-t border-cyan-500/20 grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-300 holo-reveal-item delay-3">
-                    <div><h4 class="text-white font-bold mb-2 text-sm tracking-wider uppercase">// ORIGEN</h4><p class="text-xs font-light leading-relaxed text-justify">Mi trayectoria inició en el sector técnico, estudiando Sistemas de Control Eléctrico con vistas a la ingeniería. Si bien apreciaba el rigor lógico de la disciplina, carecía de estímulo expresivo. Al volcarme al campo visual y el diseño, descubrí una sinergia perfecta: el control secuencial de la ingeniería eléctrica aplicado al montaje de video, la animación por fotogramas y la maquetación interactiva.</p></div>
-                    <div><h4 class="text-white font-bold mb-2 text-sm tracking-wider uppercase">// ENFOQUE</h4><p class="text-xs font-light leading-relaxed text-justify">Entiendo la creación multimedia como una estructura integrada de señales visuales. Cada transición, corte rítmico o trazo vectorial debe operar de manera óptima para guiar al usuario sin fricciones añadidas.</p></div>
-                    <div><h4 class="text-white font-bold mb-2 text-sm tracking-wider uppercase">// INTERESES</h4><p class="text-xs font-light leading-relaxed text-justify">Practico ajedrez analítico desde los 6 años, disciplina de la cual extraigo metodologías de planeación estratégica. Del mismo modo, el cine de autor y la composición museística nutren constantemente mi criterio espacial para la estructuración de interfaces físicas y digitales.</p></div>
+                    <div>
+                        <h4 class="text-white font-bold mb-2 text-sm tracking-wider uppercase">// ORIGEN</h4>
+                        <p class="text-xs font-light leading-relaxed text-justify">Mi trayectoria inició en el sector técnico, estudiando Sistemas de Control Eléctrico con vistas a la ingeniería. Si bien apreciaba el rigor lógico de la disciplina, carecía de estímulo expresivo. Al volcarme al campo visual y el diseño, descubrí una sinergia perfecta: el control secuencial de la ingeniería eléctrica aplicado al montaje de video, la animación por fotogramas y la maquetación interactiva.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-2 text-sm tracking-wider uppercase">// ENFOQUE</h4>
+                        <p class="text-xs font-light leading-relaxed text-justify">Entiendo la creación multimedia como una estructura integrada de señales visuales. Cada transición, corte rítmico o trazo vectorial debe operar de manera óptima para guiar al usuario sin fricciones añadidas.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-2 text-sm tracking-wider uppercase">// INTERESES</h4>
+                        <p class="text-xs font-light leading-relaxed text-justify">Practico ajedrez analítico desde los 6 años, disciplina de la cual extraigo metodologías de planeación estratégica. Del mismo modo, el cine de autor y la composición museística nutren constantemente mi criterio espacial para la estructuración de interfaces interfaces físicas y digitales.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -300,6 +560,7 @@
                 <h1 class="text-pink-500 font-bold tracking-widest text-3xl mb-6 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(255, 0, 255, 0.6), 0 0 20px rgba(255, 0, 255, 0.3);">RNRV // SHOWREEL</h1>
                 <div class="bg-black/80 border border-white/30 p-6 rounded shadow-xl holo-reveal-item delay-2">
                     <div class="aspect-video w-full rounded overflow-hidden bg-black border border-white/10 mb-4 relative">
+                        <!-- RUTA OPTIMIZADA: Video de Showreel principal en la sección N -->
                         <video class="w-full h-full object-cover" controls preload="metadata">
                             <source src="video/showreel_principal.mp4" type="video/mp4">
                         </video>
@@ -319,67 +580,67 @@
                 <p class="text-xs text-orange-400 uppercase tracking-widest mb-6 border-b border-orange-500/30 pb-2 font-medium holo-reveal-item delay-2">[ Edición de Video y Postproducción ]</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
-                    <!-- 1 - Youtube Vertical (ALTA RETENCIÓN) -->
-                    <div class="project-card project-card-orange group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-3" data-project-id="youtube">
+                    <!-- 1 - La Polar -->
+                    <div class="project-card project-card-orange p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-3" data-project-id="lapolar">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
-                                <span class="text-xs text-orange-500/80 font-bold tracking-wider">[01_RETENCION]</span>
+                                <span class="text-xs text-orange-500/80 font-bold tracking-wider">[01_PROMOCIONAL]</span>
+                                <span class="text-xs text-orange-400 scan-pulse font-bold tracking-wider">● LOCAL_LOG</span>
+                            </div>
+                            <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">CAMPAÑAS PROMOCIONALES - LA POLAR</h2>
+                            <p class="text-gray-400 text-xs font-light leading-relaxed mb-4 line-clamp-3">Montaje, postproducción y animación de gráficos comerciales para la campaña digital del restaurante "La Polar".</p>
+                        </div>
+                        <div class="overflow-hidden rounded border border-orange-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada La Polar -->
+                            <img src="img/la_polar_thumbnail.png" alt="La Polar" class="w-full h-56 object-cover">
+                        </div>
+                    </div>
+
+                    <!-- 2 - Youtube Vertical -->
+                    <div class="project-card project-card-orange p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-4" data-project-id="youtube">
+                        <div>
+                            <div class="flex justify-between items-center mb-4 font-mono">
+                                <span class="text-xs text-orange-500/80 font-bold tracking-wider">[02_RETENCION]</span>
                                 <span class="text-xs text-orange-400 scan-pulse font-bold tracking-wider">● FEED_READY</span>
                             </div>
                             <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">CONTENIDO DE ALTA RETENCIÓN</h2>
-                            <p class="text-gray-400 text-xs font-light leading-relaxed line-clamp-3">Edición de video en formato vertical (9:16) con subtitulado sincronizado.</p>
+                            <p class="text-gray-400 text-xs font-light leading-relaxed mb-4 line-clamp-3">Edición de video en formato vertical (9:16) con subtitulado sincronizado.</p>
                         </div>
-                        <!-- Creador de imagen fluida (Borderless) -->
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/alta_retencion_thumbnail.png" alt="Youtube" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(255,119,0,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/ff7700?text=Retencion'">
-                        </div>
-                    </div>
-
-                    <!-- 2 - After Effects -->
-                    <div class="project-card project-card-orange group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-4" data-project-id="aftereffects">
-                        <div>
-                            <div class="flex justify-between items-center mb-4 font-mono">
-                                <span class="text-xs text-orange-500/80 font-bold tracking-wider">[02_AFTER_EFFECTS]</span>
-                                <span class="text-xs text-orange-400 scan-pulse font-bold tracking-wider">● OFFLINE_PORT</span>
-                            </div>
-                            <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">MOTION GRAPHICS - AFTER EFFECTS</h2>
-                            <p class="text-gray-400 text-xs font-light leading-relaxed line-clamp-3">Módulo interactivo en desarrollo dedicado a la composición digital.</p>
-                        </div>
-                        <!-- Creador de imagen fluida (Borderless) -->
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/after_effects_thumbnail.png" alt="After Effects" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(255,119,0,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/ff7700?text=After+Effects'">
+                        <div class="overflow-hidden rounded border border-orange-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada Alta Retención -->
+                            <img src="img/alta_retencion_thumbnail.png" alt="Youtube" class="w-full h-56 object-cover">
                         </div>
                     </div>
 
-                    <!-- 3 - Showreel -->
-                    <div class="project-card project-card-orange group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-5" data-project-id="showreel">
+                    <!-- 3 - Showreel Presentacion -->
+                    <div class="project-card project-card-orange p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-5" data-project-id="showreel">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
                                 <span class="text-xs text-orange-500/80 font-bold tracking-wider">[03_SHOWREEL]</span>
                                 <span class="text-xs text-orange-400 scan-pulse font-bold tracking-wider">● SYSTEM_UP</span>
                             </div>
                             <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">SHOWREEL CORPORATIVO Y CREATIVO</h2>
-                            <p class="text-gray-400 text-xs font-light leading-relaxed line-clamp-3">Diseño, dirección e integración de reel institucional.</p>
+                            <p class="text-gray-400 text-xs font-light leading-relaxed mb-4 line-clamp-3">Diseño, dirección e integración de reel institucional.</p>
                         </div>
-                        <!-- Creador de imagen fluida (Borderless) -->
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/showreel_thumbnail.png" alt="Showreel" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(255,119,0,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/ff7700?text=Showreel'">
+                        <div class="overflow-hidden rounded border border-orange-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada Showreel -->
+                            <img src="img/showreel_thumbnail.png" alt="Showreel" class="w-full h-56 object-cover">
                         </div>
                     </div>
 
-                    <!-- 4 - La Polar -->
-                    <div class="project-card project-card-orange group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-6" data-project-id="lapolar">
+                    <!-- 4 - After Effects -->
+                    <div class="project-card project-card-orange p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-6" data-project-id="aftereffects">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
-                                <span class="text-xs text-orange-500/80 font-bold tracking-wider">[04_PROMOCIONAL]</span>
-                                <span class="text-xs text-orange-400 scan-pulse font-bold tracking-wider">● LOCAL_LOG</span>
+                                <span class="text-xs text-orange-500/80 font-bold tracking-wider">[04_AFTER_EFFECTS]</span>
+                                <span class="text-xs text-orange-400 scan-pulse font-bold tracking-wider">● OFFLINE_PORT</span>
                             </div>
-                            <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">CAMPAÑAS PROMOCIONALES - LA POLAR</h2>
-                            <p class="text-gray-400 text-xs font-light leading-relaxed line-clamp-3">Montaje, postproducción y animación de gráficos comerciales.</p>
+                            <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">MOTION GRAPHICS - AFTER EFFECTS</h2>
+                            <p class="text-gray-400 text-xs font-light leading-relaxed mb-4 line-clamp-3">Módulo interactivo en desarrollo dedicado a la composición digital.</p>
                         </div>
-                        <!-- Creador de imagen fluida (Borderless) -->
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/la_polar_thumbnail.png" alt="La Polar" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(255,119,0,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/ff7700?text=La+Polar'">
+                        <div class="overflow-hidden rounded border border-orange-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada After Effects -->
+                            <img src="img/after_effects_thumbnail.png" alt="After Effects" class="w-full h-56 object-cover">
                         </div>
                     </div>
                 </div>
@@ -393,8 +654,8 @@
                 <p class="text-xs text-blue-400 uppercase tracking-widest mb-6 border-b border-blue-500/30 pb-2 font-medium holo-reveal-item delay-2">[ Proyectos Interactivos y Diseño Técnico ]</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
-                    <!-- 1 - Editorial -->
-                    <div class="project-card project-card-blue group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-3" data-project-id="editorial">
+                    <!-- 1 - Editorial Castillo de Piedra -->
+                    <div class="project-card project-card-blue p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-3" data-project-id="editorial">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
                                 <span class="text-xs text-blue-500/80 font-bold tracking-wider">[01_EDITORIAL]</span>
@@ -402,13 +663,14 @@
                             </div>
                             <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">PUBLICACIÓN EDITORIAL INTERACTIVA</h2>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/editorial_thumbnail.png" alt="Editorial" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(0,162,255,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/00a2ff?text=Editorial'">
+                        <div class="overflow-hidden rounded border border-blue-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada Editorial -->
+                            <img src="img/editorial_thumbnail.png" alt="Castillo de Piedra" class="w-full h-56 object-cover">
                         </div>
                     </div>
 
-                    <!-- 2 - Tarot -->
-                    <div class="project-card project-card-blue group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-4" data-project-id="vector">
+                    <!-- 2 - Tarot Data Seer -->
+                    <div class="project-card project-card-blue p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-4" data-project-id="vector">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
                                 <span class="text-xs text-blue-500/80 font-bold tracking-wider">[02_VECTOR]</span>
@@ -416,13 +678,14 @@
                             </div>
                             <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">TAROT CYBERPUNK "DATA SEER"</h2>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/tarot_thumbnail.png" alt="Tarot" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(0,162,255,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/00a2ff?text=Tarot'">
+                        <div class="overflow-hidden rounded border border-blue-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada Tarot Vectorial -->
+                            <img src="img/tarot_thumbnail.png" alt="Tarot" class="w-full h-56 object-cover">
                         </div>
                     </div>
 
-                    <!-- 3 - AR -->
-                    <div class="project-card project-card-blue group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-5" data-project-id="ar">
+                    <!-- 3 - Realidad Aumentada -->
+                    <div class="project-card project-card-blue p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-5" data-project-id="ar">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
                                 <span class="text-xs text-blue-500/80 font-bold tracking-wider">[03_WEB_AR]</span>
@@ -430,13 +693,14 @@
                             </div>
                             <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">EXPERIENCIA DE REALIDAD AUMENTADA</h2>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/ar_thumbnail.png" alt="AR" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(0,162,255,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/00a2ff?text=WebAR'">
+                        <div class="overflow-hidden rounded border border-blue-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada WebAR -->
+                            <img src="img/ar_thumbnail.png" alt="AR" class="w-full h-56 object-cover">
                         </div>
                     </div>
 
                     <!-- 4 - Bogo y Sora -->
-                    <div class="project-card project-card-blue group p-6 rounded flex flex-col h-[480px] holo-reveal-item delay-6" data-project-id="bogoSora">
+                    <div class="project-card project-card-blue p-6 rounded flex flex-col justify-between h-[490px] holo-reveal-item delay-6" data-project-id="bogoSora">
                         <div>
                             <div class="flex justify-between items-center mb-4 font-mono">
                                 <span class="text-xs text-blue-500/80 font-bold tracking-wider">[04_UNITY_DEV]</span>
@@ -444,8 +708,9 @@
                             </div>
                             <h2 class="text-lg font-medium tracking-wide text-white mb-2 uppercase">VIDEOJUEGO "BOGO Y SORA"</h2>
                         </div>
-                        <div class="flex-1 flex items-center justify-center mt-4 w-full">
-                            <img src="img/bogo_sora_thumbnail.png" alt="Game Dev" class="max-w-full max-h-[220px] object-contain drop-shadow-[0_0_15px_rgba(0,162,255,0.5)] transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/1a1a1a/00a2ff?text=Bogo+Sora'">
+                        <div class="overflow-hidden rounded border border-blue-500/20">
+                            <!-- RUTA OPTIMIZADA: Thumbnail portada Videojuego Unity -->
+                            <img src="img/bogo_sora_thumbnail.png" alt="Game Dev" class="w-full h-56 object-cover">
                         </div>
                     </div>
                 </div>
@@ -453,9 +718,11 @@
         </section>
     </main>
 
-    <!-- INTERFAZ DETALLE DE PROYECTO (MODAL HUD INTERACTIVO CON GALERÍA) -->
+    <!-- INTERFAZ DETALLE DE PROYECTO (MODAL HUD INTERACTIVO CON GALERÍA DINÁMICA DE EVIDENCIAS) -->
     <div id="project-detail-modal" class="project-detail-overlay">
         <div id="modal-container" class="bg-[#08080c]/98 border p-8 rounded max-w-4xl w-full flex flex-col relative shadow-2xl mx-4 my-8">
+            
+            <!-- Encabezado Diagnóstico -->
             <div id="modal-header" class="flex justify-between items-center border-b pb-4 mb-4">
                 <div>
                     <span id="modal-log-id" class="text-xs block tracking-widest font-bold font-mono">[ DESENCRIPTANDO_A ]</span>
@@ -463,6 +730,8 @@
                 </div>
                 <button id="modal-close-btn" class="text-xs border py-2 px-4 rounded tracking-widest font-bold font-mono">[ DESCONECTAR_SESIÓN_ ]</button>
             </div>
+
+            <!-- Detalles Técnicos Consolidados -->
             <div id="modal-top-details" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-black/50 border border-gray-800 p-4 rounded mb-6 text-xs font-mono">
                 <div><span class="text-gray-400 block text-[10px] font-bold">// ESTADO DE LA EVIDENCIA</span><span id="modal-proj-evidence" class="text-white font-semibold text-sm">--</span></div>
                 <div><span class="text-gray-400 block text-[10px] font-bold">// HERRAMIENTAS</span><span id="modal-proj-tools" class="text-white font-semibold text-sm">--</span></div>
@@ -491,21 +760,10 @@
         </div>
     </div>
 
-    <!-- NUEVO VISOR INTERACTIVO PANTALLA COMPLETA (LIGHTBOX) PARA EL TAROT -->
-    <div id="lightbox-overlay" class="fixed inset-0 bg-black/95 z-[999] flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-md">
-        <button id="lightbox-close" class="absolute top-6 right-6 text-white font-mono text-xl z-[1000] bg-black/50 border border-white/20 p-2 hover:bg-red-500/20 hover:border-red-500 hover:text-red-500 transition-colors">[ CERRAR_VISOR ]</button>
-        <button id="lightbox-prev" class="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white font-mono text-4xl p-4 z-[1000] hover:text-cyan-400 hover:scale-110 transition-all">[ &lt; ]</button>
-        <button id="lightbox-next" class="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white font-mono text-4xl p-4 z-[1000] hover:text-cyan-400 hover:scale-110 transition-all">[ &gt; ]</button>
-        
-        <div class="relative w-full max-w-5xl h-[85vh] flex items-center justify-center p-4">
-            <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain drop-shadow-[0_0_15px_rgba(0,162,255,0.4)]">
-        </div>
-        
-        <div id="lightbox-counter" class="absolute bottom-6 text-cyan-400 font-mono text-sm tracking-widest z-[1000] border border-cyan-500/30 bg-black/50 px-4 py-2 rounded">IMG: 1/5</div>
-    </div>
-
+    <!-- LOGICA INTERACTIVA Y SONIDO -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // --- SELECTORES DOM AL INICIO (Corregido para evitar ReferenceError) ---
             const mainMenu = document.getElementById('main-menu');
             const panels = document.querySelectorAll('.panel');
             const closeBtn = document.getElementById('close-btn');
@@ -514,26 +772,29 @@
             const projectModal = document.getElementById('project-detail-modal');
             const modalContainer = document.getElementById('modal-container');
             const modalHeader = document.getElementById('modal-header');
+            const modalSidebar = document.getElementById('modal-sidebar');
             const modalCloseBtn = document.getElementById('modal-close-btn');
 
             const mLogId = document.getElementById('modal-log-id');
             const mTitle = document.getElementById('modal-project-title');
             const mDesc = document.getElementById('modal-project-desc');
             const mHex = document.getElementById('modal-project-hex');
+            
             const mEvidence = document.getElementById('modal-proj-evidence');
             const mTools = document.getElementById('modal-proj-tools');
             const mSkillsList = document.getElementById('modal-project-skills');
             const mGallery = document.getElementById('modal-evidence-gallery');
 
+            /* --- CONTROL DE AUDIO LOCAL GITHUB --- */
             const sndSectionEnter = new Audio('audio/section_enter.mp3');
             const sndSectionExit  = new Audio('audio/section_exit.mp3');
             const sndModalEnter   = new Audio('audio/modal_enter.mp3');
             const sndModalExit    = new Audio('audio/modal_exit.mp3');
 
-            function playSectionEnter() { sndSectionEnter.play().catch(e => console.log('Audio log')); }
-            function playSectionExit()  { sndSectionExit.play().catch(e => console.log('Audio log')); }
-            function playModalEnter()   { sndModalEnter.play().catch(e => console.log('Audio log')); }
-            function playModalExit()    { sndModalExit.play().catch(e => console.log('Audio log')); }
+            function playSectionEnter() { sndSectionEnter.play().catch(e => console.log('Audio init log')); }
+            function playSectionExit()  { sndSectionExit.play().catch(e => console.log('Audio init log')); }
+            function playModalEnter()   { sndModalEnter.play().catch(e => console.log('Audio init log')); }
+            function playModalExit()    { sndModalExit.play().catch(e => console.log('Audio init log')); }
 
             /* --- CONFIGURACIÓN ORDENADA DE ASSETS INTERNOS --- */
             const projectDB = {
@@ -548,8 +809,8 @@
                     evidence: "Concluido (Video promocional verificado)", tools: "Adobe Premiere Pro, Adobe After Effects",
                     skills: [
                         "Postproducción Comercial: Integración de marcas, logotipos flotantes y cintillas informativas dinámicas sin saturar la composición visual.",
-                        "Trabajo con Material de Terceros: Procesamiento, limpieza y reestructuración de material bruto entregado por el cliente.",
-                        "Venta y Conversión Audiovisual: Enfoque comercial directo, estructurando la pieza para comunicar eventos."
+                        "Trabajo con Material de Terceros: Procesamiento, limpieza y reestructuración de material bruto entregado por el cliente, adaptándolo a un guion y ritmo promocional efectivo.",
+                        "Venta y Conversión Audiovisual: Enfoque comercial directo, estructurando la pieza para comunicar eventos, menús y horarios con claridad, motivando la acción inmediata del espectador."
                     ],
                     hex: "RENDER: PREMIERE_CC\nSTATUS: ONLINE_LOG", accent: "orange"
                 },
@@ -566,8 +827,8 @@
                     evidence: "Concluido (MP4s Verificados)", tools: "Premiere, After Effects, Photoshop",
                     skills: [
                         "Narrativa y Ritmo para Algoritmo: Estructuración de videos en formato vertical (9:16) optimizados para plataformas como YouTube Shorts, TikTok y Reels.",
-                        "Tipografía Cinética y Sonorización: Sincronización de subtítulos dinámicos de alto impacto visual y diseño de efectos sonoros complementarios.",
-                        "Edición de Montajes (Gaming): Flujo de trabajo ágil con assets multimedia externos para crear secuencias rápidas de jugadas."
+                        "Tipografía Cinética y Sonorización: Sincronización de subtítulos dinámicos de alto impacto visual y diseño de efectos sonoros complementarios para acentuar el dinamismo y evitar el scroll del usuario.",
+                        "Edición de Montajes (Gaming): Flujo de trabajo ágil con assets multimedia externos para crear secuencias rápidas de jugadas (Fortnite, League of Legends), recortando tiempos muertos y maximizando momentos clave de la acción."
                     ],
                     hex: "ALGORITHM: HIGH_HOOK\nSTATUS: BROADCAST", accent: "orange"
                 },
@@ -617,7 +878,8 @@
                     skills: [
                         "Despliegue Frontend: Publicación en servidores autohospedados (GitHub Pages), vinculación de dominios propios (.com.mx), formularios de contacto interactivos y optimización de carga.",
                         "Resolución con Inteligencia Artificial: Integración de prompts avanzados para co-diseñar, estructurar y depurar scripts dinámicos (CSS/JS) para un visor de Flipbook interactivo y responsive.",
-                        "Diseño y Postproducción Gráfica: Trabajo colaborativo siguiendo retículas de marca específicas. Recorte técnico de fotografías a PNG y corrección de color/exposición."
+                        "Diseño y Postproducción Gráfica: Trabajo colaborativo siguiendo retículas de marca específicas. Recorte técnico de fotografías a PNG y corrección de color/exposición.",
+                        "Visión de Negocio: Reducción de costos para el cliente al evitar suscripciones mensuales de plataformas de terceros."
                     ],
                     hex: "ENGINE_CORE: ACTIVE\nSTATUS: ONLINE_LOG", accent: "blue"
                 },
@@ -626,16 +888,7 @@
                     code: "[ ID_ARCHIVO // VECTORS_DIELINES ]",
                     desc: "Conceptualización, ilustración vectorial y desarrollo técnico de empaque (packaging) para el proyecto editorial 'Tarot Data Seer'. Creación integral de identidad gráfica con estética synthwave, optimización de assets vectoriales complejos en Adobe Illustrator y estructuración técnica de líneas de suaje (dielines) para producción física.",
                     media: [
-                        { 
-                            type: "gallery_btn", 
-                            images: [
-                                "img/tarot_ilustracion_01.png",
-                                "img/tarot_ilustracion_02.png",
-                                "img/tarot_ilustracion_03.png",
-                                "img/tarot_ilustracion_04.png",
-                                "img/tarot_ilustracion_05.png"
-                            ]
-                        },
+                        { type: "image", src: "img/tarot_thumbnail.png" },
                         { type: "image", src: "img/tarot_evidencia_02.png" },
                         { type: "image", src: "img/tarot_evidencia_03.png" }
                     ],
@@ -660,7 +913,8 @@
                     skills: [
                         "Bocetaje y Planeación Digital: Estructuración y composición previa del layout conceptual de la pieza en Adobe Illustrator antes de llevarlo a su soporte definitivo.",
                         "Ejecución Plástica Tradicional (Óleo): Pintura y manufactura física de la obra de arte sobre un lienzo real al óleo, el cual sirve como marcador (marker) de tracking de alta precisión para el sensor AR.",
-                        "Optimización y Modelado 3D (Maya): Modelado tridimensional de los elementos dinámicos que emergen de la obra, manteniendo un conteo de polígonos balanceado y mapas de texturas listos para la visualización en navegadores móviles."
+                        "Optimización y Modelado 3D (Maya): Modelado tridimensional de los elementos dinámicos que emergen de la obra, manteniendo un conteo de polígonos balanceado y mapas de texturas listos para la visualización en navegadores móviles.",
+                        "Interactividad WebAR sin Fricciones (Kivicube): Programación y configuración de la escena interactiva en Kivicube, permitiendo que cualquier smartphone escanee el óleo real y despliegue las animaciones 3D nativas, eliminando la necesidad de descargar software de terceros."
                     ],
                     hex: "CAMERA_STATE: CONNECTED\nSTATUS: RUNNING", accent: "blue"
                 },
@@ -677,45 +931,13 @@
                     skills: [
                         "Game Design Completo: Desarrollo del 90% del armado del juego, estructuración de lógica de estados, barras de salud, interfaces y flujo de juego.",
                         "Level Design: Estructuración y delimitación de mapas interactivos, colocación de obstáculos y diseño de patrones de comportamiento de enemigos.",
-                        "Animación de Sprites (Pixel Art): Creación de hojas de sprites en Photoshop y sincronización de animaciones cuadro por cuadro."
+                        "Animación de Sprites (Pixel Art): Creación de hojas de sprites en Photoshop y sincronización de animaciones cuadro por cuadro.",
+                        "Integración Técnico: Copiloto de desarrollo en C# para Unity, traduciendo requerimientos mecánicos a código funcional mediante IA."
                     ],
                     hex: "STORY_FLOW: STABLE\nSTATUS: ENCRYPTED", accent: "blue"
                 }
             };
 
-            // Lógica Lightbox
-            let currentGalleryImages = [];
-            let currentGalleryIdx = 0;
-            const lightbox = document.getElementById('lightbox-overlay');
-            const lbImg = document.getElementById('lightbox-img');
-            const lbPrev = document.getElementById('lightbox-prev');
-            const lbNext = document.getElementById('lightbox-next');
-            const lbClose = document.getElementById('lightbox-close');
-            const lbCounter = document.getElementById('lightbox-counter');
-
-            function updateLightbox() {
-                // Placeholder fallback for editor environment
-                lbImg.src = currentGalleryImages[currentGalleryIdx];
-                lbImg.onerror = function() { this.src = 'https://placehold.co/1278x2211/1a1a1a/00a2ff?text=Ilustracion+Vertical'; };
-                lbCounter.innerText = `IMG: ${currentGalleryIdx + 1}/${currentGalleryImages.length}`;
-            }
-
-            function openLightbox(images) {
-                currentGalleryImages = images;
-                currentGalleryIdx = 0;
-                updateLightbox();
-                lightbox.classList.remove('opacity-0', 'pointer-events-none');
-                lightbox.classList.add('opacity-100', 'pointer-events-auto');
-            }
-
-            lbClose.onclick = () => {
-                lightbox.classList.remove('opacity-100', 'pointer-events-auto');
-                lightbox.classList.add('opacity-0', 'pointer-events-none');
-            };
-            lbPrev.onclick = (e) => { e.stopPropagation(); currentGalleryIdx = (currentGalleryIdx - 1 + currentGalleryImages.length) % currentGalleryImages.length; updateLightbox(); };
-            lbNext.onclick = (e) => { e.stopPropagation(); currentGalleryIdx = (currentGalleryIdx + 1) % currentGalleryImages.length; updateLightbox(); };
-
-            // Panel interactivo
             panels.forEach(panel => {
                 panel.addEventListener('click', () => {
                     playSectionEnter();
@@ -729,14 +951,18 @@
                     panel.classList.add('active-panel');
                     document.body.classList.add('section-open');
                     
-                    setTimeout(() => { if (targetSection) targetSection.classList.add('visible'); }, 750);
+                    setTimeout(() => {
+                        if (targetSection) targetSection.classList.add('visible');
+                    }, 750);
                 });
             });
 
             function closeSections() {
                 playSectionExit();
                 const activeSection = document.querySelector('.content-section.visible');
-                if (activeSection) activeSection.classList.remove('visible');
+                if (activeSection) {
+                    activeSection.classList.remove('visible');
+                }
                 setTimeout(() => {
                     document.body.classList.remove('section-open');
                     mainMenu.classList.remove('panel-active');
@@ -745,7 +971,6 @@
             }
             if (closeBtn) closeBtn.addEventListener('click', closeSections);
 
-            // Renderizado del Modal con nuevo Botón Galería
             if (projectCards && projectCards.length > 0) {
                 projectCards.forEach(card => {
                     card.addEventListener('click', (e) => {
@@ -761,24 +986,32 @@
                             if (projectData.accent === 'orange') {
                                 modalContainer.className = 'bg-[#08080c]/98 border p-8 rounded max-w-4xl w-full flex flex-col relative shadow-2xl mx-4 my-8 theme-orange border-[#ff7700]/70';
                                 modalContainer.style.boxShadow = '0 0 35px rgba(255, 119, 0, 0.4), inset 0 0 15px rgba(255, 119, 0, 0.15)';
+                                
+                                modalHeader.style.borderColor = 'rgba(255, 119, 0, 0.4)';
                                 document.getElementById('modal-top-details').style.borderColor = 'rgba(255, 119, 0, 0.35)';
                                 document.getElementById('modal-skills-box').style.borderColor = 'rgba(255, 119, 0, 0.35)';
                                 document.getElementById('modal-system-footer').className = 'border-t border-gray-800 pt-4 flex justify-between items-center text-xs font-mono text-orange-500/70 font-bold';
+                                
                                 if (mLogId) { mLogId.className = 'text-xs text-orange-400 block tracking-widest font-bold'; mLogId.style.textShadow = '0 0 8px rgba(255, 119, 0, 0.6)'; }
-                                if (mTitle) mTitle.style.textShadow = '0 0 10px #ff7700, 0 0 20px rgba(255, 119, 0, 0.4)';
+                                if (mTitle) { mTitle.style.textShadow = '0 0 10px #ff7700, 0 0 20px rgba(255, 119, 0, 0.4)'; }
                                 if (mHex) { mHex.className = 'text-[10px] text-orange-500 font-bold leading-normal !font-mono'; mHex.style.textShadow = '0 0 4px rgba(255, 119, 0, 0.4)'; }
-                                if (modalCloseBtn) { modalCloseBtn.className = 'text-xs border border-red-500/40 hover:border-red-500 bg-red-950/30 hover:bg-red-950/60 text-red-500 hover:text-red-400 py-2 px-4 rounded tracking-widest transition-all font-bold flex-shrink-0'; modalCloseBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.2)'; }
+                                if (modalCloseBtn) { modalCloseBtn.className = 'text-xs border border-red-500/40 hover:border-red-500 bg-red-950/30 hover:bg-red-950/60 text-red-500 hover:text-red-400 py-2 px-4 rounded tracking-widest transition-all font-bold whitespace-nowrap flex-shrink-0'; modalCloseBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.2)'; }
+
                                 document.getElementById('modal-sidebar').className = 'bg-black/40 border border-orange-500/25 p-4 rounded text-xs text-orange-400 flex flex-col justify-between space-y-4 h-fit md:sticky md:top-4';
                             } else {
                                 modalContainer.className = 'bg-[#08080c]/98 border p-8 rounded max-w-4xl w-full flex flex-col relative shadow-2xl mx-4 my-8 theme-blue border-[#00a2ff]/70';
                                 modalContainer.style.boxShadow = '0 0 35px rgba(0, 162, 255, 0.4), inset 0 0 15px rgba(0, 162, 255, 0.15)';
+                                
+                                modalHeader.style.borderColor = 'rgba(0, 162, 255, 0.4)';
                                 document.getElementById('modal-top-details').style.borderColor = 'rgba(0, 162, 255, 0.35)';
                                 document.getElementById('modal-skills-box').style.borderColor = 'rgba(0, 162, 255, 0.35)';
                                 document.getElementById('modal-system-footer').className = 'border-t border-gray-800 pt-4 flex justify-between items-center text-xs font-mono text-blue-500/70 font-bold';
+                                
                                 if (mLogId) { mLogId.className = 'text-xs text-blue-400 block tracking-widest font-bold'; mLogId.style.textShadow = '0 0 8px rgba(0, 162, 255, 0.6)'; }
-                                if (mTitle) mTitle.style.textShadow = '0 0 10px #00a2ff, 0 0 20px rgba(0, 162, 255, 0.4)';
+                                if (mTitle) { mTitle.style.textShadow = '0 0 10px #00a2ff, 0 0 20px rgba(0, 162, 255, 0.4)'; }
                                 if (mHex) { mHex.className = 'text-[10px] text-blue-500 font-bold leading-normal !font-mono'; mHex.style.textShadow = '0 0 4px rgba(0, 162, 255, 0.4)'; }
-                                if (modalCloseBtn) { modalCloseBtn.className = 'text-xs border border-red-500/40 hover:border-red-500 bg-red-950/30 hover:bg-red-950/60 text-red-500 hover:text-red-400 py-2 px-4 rounded tracking-widest transition-all font-bold flex-shrink-0'; modalCloseBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.2)'; }
+                                if (modalCloseBtn) { modalCloseBtn.className = 'text-xs border border-red-500/40 hover:border-red-500 bg-red-950/30 hover:bg-red-950/60 text-red-500 hover:text-red-400 py-2 px-4 rounded tracking-widest transition-all font-bold whitespace-nowrap flex-shrink-0'; modalCloseBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.2)'; }
+
                                 document.getElementById('modal-sidebar').className = 'bg-black/40 border border-blue-500/25 p-4 rounded text-xs text-blue-400 flex flex-col justify-between space-y-4 h-fit md:sticky md:top-4';
                             }
 
@@ -792,28 +1025,6 @@
                             if (mGallery) {
                                 mGallery.innerHTML = '';
                                 projectData.media.forEach((item, index) => {
-                                    
-                                    // NUEVO BOTÓN GIGANTE DE LIGHTBOX
-                                    if(item.type === 'gallery_btn') {
-                                        const btn = document.createElement('button');
-                                        const btnColor = projectData.accent === 'orange' ? '#ff7700' : '#00a2ff';
-                                        btn.className = 'w-full py-12 border-2 border-dashed bg-black/40 hover:bg-white/5 transition-all duration-300 font-mono flex flex-col items-center justify-center space-y-3 relative group overflow-hidden rounded';
-                                        btn.style.borderColor = projectData.accent === 'orange' ? 'rgba(255, 119, 0, 0.4)' : 'rgba(0, 162, 255, 0.4)';
-                                        
-                                        btn.innerHTML = `
-                                            <span class="text-xl font-bold uppercase tracking-widest transition-transform group-hover:scale-105" style="color:${btnColor}; text-shadow: 0 0 10px ${btnColor};">[ VISUALIZAR ILUSTRACIONES ]</span>
-                                            <span class="text-xs text-gray-400 tracking-wider">ABRIR VISOR INTERACTIVO EN PANTALLA COMPLETA</span>
-                                        `;
-                                        
-                                        btn.onclick = (e) => {
-                                            e.stopPropagation();
-                                            openLightbox(item.images);
-                                        };
-                                        mGallery.appendChild(btn);
-                                        return; // Skip normal rendering
-                                    }
-
-                                    // RENDER NORMAL MEDIA
                                     const wrapper = document.createElement('div');
                                     wrapper.className = 'rounded border overflow-hidden relative bg-black/40';
                                     wrapper.style.borderColor = projectData.accent === 'orange' ? 'rgba(255, 119, 0, 0.35)' : 'rgba(0, 162, 255, 0.35)';
@@ -838,14 +1049,8 @@
                                     } else {
                                         const imgEl = document.createElement('img');
                                         imgEl.src = item.src;
-                                        if (item.aspect === '9/16') {
-                                            imgEl.className = 'w-full max-h-[500px] object-contain bg-black';
-                                            wrapper.className += ' max-w-[320px] mx-auto';
-                                        } else {
-                                            imgEl.className = 'w-full aspect-video object-cover bg-black'; 
-                                            // Fallback para previsualización (puedes borrarlo en local si quieres)
-                                            imgEl.onerror = function() { this.src = 'https://placehold.co/600x400/1a1a1a/00a2ff?text=Imagen+Evidencia'; };
-                                        }
+                                        imgEl.className = item.aspect === '9/16' ? 'w-full max-h-[500px] object-contain bg-black' : 'w-full h-48 md:h-56 object-cover';
+                                        if (item.aspect === '9/16') wrapper.className += ' max-w-[320px] mx-auto';
                                         wrapper.appendChild(imgEl);
                                     }
                                     mGallery.appendChild(wrapper);
@@ -864,6 +1069,7 @@
                 });
             }
 
+            // --- Lógica centralizada para cerrar el modal ---
             function closeProjectModal() {
                 playModalExit();
                 if (projectModal) projectModal.classList.remove('visible');
@@ -871,17 +1077,24 @@
                 if (activeSection) activeSection.style.overflowY = 'auto';
             }
 
-            if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeProjectModal);
+            // Cierre con el botón "Desconectar Sesión"
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', closeProjectModal);
+            }
 
+            // --- NUEVO: Cierre al hacer click afuera (Click Outside) ---
             if (projectModal) {
                 projectModal.addEventListener('click', (e) => {
-                    if (e.target === projectModal) closeProjectModal();
+                    // Si el elemento clicado es exactamente el fondo oscuro y no sus hijos
+                    if (e.target === projectModal) {
+                        closeProjectModal();
+                    }
                 });
             }
 
         });
 
-        /* --- STREAMING_CHUNK: Matrix Canvas Background --- */
+        /* --- LOGICA DEL BACKDROP MATRIX CANVAS --- */
         const bgCanvas = document.getElementById('background-canvas');
         if (bgCanvas) {
             const bgCtx = bgCanvas.getContext('2d');
