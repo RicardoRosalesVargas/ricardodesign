@@ -48,86 +48,56 @@
             font-family: 'Courier New', Courier, monospace !important;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #08080c;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
+        /* --- Personalización de Barras de Scroll Cyberpunk --- */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #08080c; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 
+        /* --- Efecto de líneas de escaneo CRT --- */
         #scanline-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0) 0px,
-                rgba(0, 0, 0, 0) 1px,
-                rgba(255, 255, 255, 0.05) 2px,
-                rgba(255, 255, 255, 0.05) 3px
-            );
+            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 1px, rgba(255, 255, 255, 0.05) 2px, rgba(255, 255, 255, 0.05) 3px);
             animation: scanline-flicker 15s linear infinite;
             z-index: 999;
         }
 
         @keyframes scanline-flicker {
-            0% { opacity: 0.95; }
-            5% { opacity: 0.85; }
-            10% { opacity: 0.98; }
-            15% { opacity: 0.9; }
-            100% { opacity: 0.95; }
+            0% { opacity: 0.95; } 5% { opacity: 0.85; } 10% { opacity: 0.98; } 15% { opacity: 0.9; } 100% { opacity: 0.95; }
         }
 
+        /* --- Ruido estático analógico --- */
         #grain-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.012; 
-            pointer-events: none;
-            z-index: 998;
+            opacity: 0.012; pointer-events: none; z-index: 998;
         }
 
+        /* --- MENÚ PRINCIPAL --- */
         #main-menu {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
+            display: flex; height: 100vh; width: 100vw;
             transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            border-left: 1px solid #101018;
-            position: relative;
-            z-index: 20;
+            border-left: 1px solid #101018; position: relative; z-index: 20;
         }
 
         .panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
             border-right: 1px solid #101018;
-            background-color: rgba(8, 8, 12, 0.85);
-            backdrop-filter: blur(8px);
+            background-color: rgba(8, 8, 12, 0.85); backdrop-filter: blur(8px);
         }
         
         #main-menu:not(.panel-active):hover .panel { flex: 0.7; }
         #main-menu:not(.panel-active):hover .panel:hover { flex: 2.3; background-color: rgba(12, 12, 20, 0.92); }
+
         #main-menu.panel-active .panel { flex: 0 0 0%; width: 0; opacity: 0; border-right-width: 0px; pointer-events: none; }
         #main-menu.panel-active .panel.active-panel { flex: 1 0 100%; width: 100vw; opacity: 1; pointer-events: auto; background-color: #050508; }
         #main-menu.panel-active .panel.active-panel .panel-letter { transform: scale(3.5); opacity: 0; filter: blur(20px); transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease; }
 
         .panel-letter {
-            font-family: 'Orbitron', sans-serif !important; 
-            font-size: clamp(8rem, 14vw, 14rem);
+            font-family: 'Orbitron', sans-serif !important; font-size: clamp(8rem, 14vw, 14rem);
             transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.3s ease;
             animation: neon-chroma 5.5s infinite linear;
         }
@@ -138,25 +108,15 @@
         #panel-o2 .panel-letter, #panel-o2 .panel-title { color: #00a2ff; }
 
         .panel-title {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            opacity: 0;
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-            position: absolute;
-            bottom: 12%;
-            white-space: nowrap;
-            transform: translateY(10px);
+            font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out; position: absolute; bottom: 12%; white-space: nowrap; transform: translateY(10px);
         }
 
         .panel:hover .panel-title { opacity: 0.95; transform: translateY(0); }
         .panel:hover .panel-letter { transform: scale(1.08); animation-duration: 2.2s; filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 2px rgba(255, 255, 255, 0.4)); }
 
         @keyframes neon-chroma {
-            0%, 8%, 12%, 48%, 52%, 80%, 84%, 100% {
-                text-shadow: 0 0 5px currentColor, 0 0 13px currentColor, 0 0 20px rgba(255, 255, 255, 0.25), 3px 2px 1px rgba(255, 0, 0, 0.8), -3px -2px 1px rgba(0, 255, 255, 0.8); 
-                transform: scale(1) skewX(0deg); filter: drop-shadow(0 0 3px currentColor);
-            }
+            0%, 8%, 12%, 48%, 52%, 80%, 84%, 100% { text-shadow: 0 0 5px currentColor, 0 0 13px currentColor, 0 0 20px rgba(255, 255, 255, 0.25), 3px 2px 1px rgba(255, 0, 0, 0.8), -3px -2px 1px rgba(0, 255, 255, 0.8); transform: scale(1) skewX(0deg); filter: drop-shadow(0 0 3px currentColor); }
             9% { text-shadow: 0 0 6px currentColor, 0 0 18px currentColor, 0 0 28px rgba(255, 255, 255, 0.3), -7px -3px 2px rgba(255, 0, 0, 0.9), 7px 3px 2px rgba(0, 255, 255, 0.9); transform: scale(1.03) skewX(-2.5deg) translateY(-2px); }
             10% { text-shadow: 0 0 3px currentColor, 0 0 8px currentColor, 4px 3px 1px rgba(255, 255, 0, 0.85), -4px -3px 1px rgba(255, 0, 255, 0.85); transform: scale(0.98) skewX(3.5deg) translateY(2px); }
             11% { text-shadow: 0 0 4px currentColor, 0 0 10px currentColor, 2px -1px 2px rgba(255, 0, 0, 0.75), -2px 1px 2px rgba(0, 255, 255, 0.75); transform: scale(1) skewX(0deg); }
@@ -236,20 +196,20 @@
         <!-- SECCIÓN R: PERFIL -->
         <section id="b" class="content-section">
             <div class="container mx-auto max-w-4xl bg-black/50 p-8 rounded-lg border border-cyan-500/30 backdrop-blur-md">
-                <h1 class="text-cyan-400 font-bold tracking-widest text-3xl mb-6 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.3);">RNRV // PERFIL</h1>
+                <h1 class="text-cyan-400 font-bold tracking-widest text-3xl mb-6 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.3);">RICARDO // PERFIL</h1>
                 <div class="grid md:grid-cols-3 gap-8 items-center holo-reveal-item delay-2">
                     <div class="md:col-span-1 flex justify-center">
                         <img src="img/avatar_perfil.jpg" alt="Ricardo Rosales" class="rounded border border-cyan-500/40 shadow-lg shadow-cyan-500/20">
                     </div>
                     <div class="md:col-span-2">
-                        <h2 class="text-3xl font-semibold tracking-wider text-white uppercase mb-1">Ricardo Rosales</h2>
+                        <h2 class="text-3xl font-semibold tracking-wider text-white uppercase mb-1">Ricardo Nacxit Rosales Vargas</h2>
                         <h3 class="text-xl text-cyan-400 mb-4 font-medium" style="text-shadow: 0 0 8px rgba(0,255,255,0.4);">(RNRV)</h3>
                         <p class="mb-4 text-justify text-gray-300 font-light leading-relaxed">Diseñador multimedia enfocado en la estructuración de narrativas e interacciones visuales. Mi trabajo integra desde la ilustración vectorial y los gráficos animados hasta la postproducción de video y maquetación de experiencias, uniendo técnica de control y rigor creativo en cada entrega.</p>
                         <p class="mb-2 text-sm"><strong class="text-cyan-400 text-xs font-medium">// Ubicación:</strong> CDMX, México</p>
                         <p class="mb-6 text-sm"><strong class="text-cyan-400 text-xs font-medium">// Firma:</strong> Sistemas Multimedia</p>
                         <div class="flex items-center space-x-6 mt-6">
-                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="Correo"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+                            <a href="https://www.linkedin.com/in/ricardo-nacxit-rosales-vargas-58855b371/" class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                            <a href="mailto:ricardorosalesn5@gmail.com?subject=Contacto%20desde%20tu%20portafolio&body=Hola%20Ricardo,%20me%20gustar%C3%ADa%20hablar%20sobre..." class="text-gray-400 hover:text-cyan-400 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110" title="Correo"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
                         </div>
                     </div>
                 </div>
@@ -273,7 +233,7 @@
         <!-- SECCIÓN N: SHOWREEL -->
         <section id="o1" class="content-section">
             <div class="container mx-auto max-w-4xl bg-black/50 p-8 rounded-lg border border-magenta-500/30 backdrop-blur-md">
-                <h1 class="text-pink-500 font-bold tracking-widest text-3xl mb-6 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(255, 0, 255, 0.6), 0 0 20px rgba(255, 0, 255, 0.3);">RNRV // SHOWREEL</h1>
+                <h1 class="text-pink-500 font-bold tracking-widest text-3xl mb-6 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(255, 0, 255, 0.6), 0 0 20px rgba(255, 0, 255, 0.3);">NACXIT // SHOWREEL</h1>
                 <div class="bg-black/80 border border-white/30 p-6 rounded shadow-xl holo-reveal-item delay-2">
                     <div class="aspect-video w-full rounded overflow-hidden bg-black border border-white/10 mb-4 relative">
                         <video class="w-full h-full object-cover" controls preload="metadata">
@@ -284,6 +244,11 @@
                         <span class="text-white block mb-2 font-bold uppercase tracking-wider">// DETALLES DE PRODUCCIÓN</span>
                         <p class="text-xs text-gray-400">Edición rítmica, corrección de color cinemática y composición de gráficos de movimiento...</p>
                     </div>
+                    <div class="mt-6 pt-4 border-t border-magenta-500/20 text-right">
+                        <button id="btn-to-video-details" class="text-xs border border-magenta-500/50 hover:border-magenta-500 bg-magenta-900/20 hover:bg-magenta-900/40 text-magenta-400 hover:text-magenta-300 py-2 px-6 rounded tracking-widest transition-all font-bold font-mono shadow-[0_0_10px_rgba(255,0,255,0.2)] hover:shadow-[0_0_15px_rgba(255,0,255,0.4)]">
+                            [ VER DETALLES TÉCNICOS ]
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -291,7 +256,7 @@
         <!-- SECCIÓN R: EDICIÓN DE VIDEO -->
         <section id="g" class="content-section">
             <div class="container mx-auto max-w-4xl">
-                <h1 class="text-orange-500 font-bold tracking-widest text-3xl mb-2 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(255, 119, 0, 0.6), 0 0 20px rgba(255, 119, 0, 0.3);">RNRV // EDICIÓN DE VIDEO</h1>
+                <h1 class="text-orange-500 font-bold tracking-widest text-3xl mb-2 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(255, 119, 0, 0.6), 0 0 20px rgba(255, 119, 0, 0.3);">ROSALES // EDICIÓN DE VIDEO</h1>
                 <p class="text-xs text-orange-400 uppercase tracking-widest mb-6 border-b border-orange-500/30 pb-2 font-medium holo-reveal-item delay-2">[ Edición de Video y Postproducción ]</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
@@ -361,7 +326,7 @@
         <!-- SECCIÓN V: OTROS PROYECTOS -->
         <section id="o2" class="content-section">
             <div class="container mx-auto max-w-4xl">
-                <h1 class="text-blue-500 font-bold tracking-widest text-3xl mb-2 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(0, 162, 255, 0.6), 0 0 20px rgba(0, 162, 255, 0.3);">RNRV // OTROS PROYECTOS</h1>
+                <h1 class="text-blue-500 font-bold tracking-widest text-3xl mb-2 uppercase holo-reveal-item delay-1" style="text-shadow: 0 0 10px rgba(0, 162, 255, 0.6), 0 0 20px rgba(0, 162, 255, 0.3);">VARGAS // OTROS PROYECTOS</h1>
                 <p class="text-xs text-blue-400 uppercase tracking-widest mb-6 border-b border-blue-500/30 pb-2 font-medium holo-reveal-item delay-2">[ Proyectos Interactivos y Diseño Técnico ]</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
@@ -497,6 +462,21 @@
             function playModalEnter()   { sndModalEnter.play().catch(e => console.log('Audio init log')); }
             function playModalExit()    { sndModalExit.play().catch(e => console.log('Audio init log')); }
 
+            // GESTIÓN DE VIDEOS
+            function stopAllVideos() {
+                document.querySelectorAll('video').forEach(vid => {
+                    vid.pause();
+                });
+            }
+
+            document.addEventListener('play', function(e) {
+                if (e.target.tagName === 'VIDEO') {
+                    document.querySelectorAll('video').forEach(vid => {
+                        if (vid !== e.target) vid.pause();
+                    });
+                }
+            }, true);
+
             const projectDB = {
                 lapolar: {
                     title: "Campañas Promocionales - La Polar",
@@ -538,7 +518,8 @@
                     desc: "Diseño, dirección e integración integral de Showreel, implementando técnicas avanzadas de sincronización rítmica, animación vectorial interactiva por capas y composición en After Effects. Desarrollado bajo un enfoque estratégico de retención de audiencia para formatos digitales.",
                     media: [
                         { type: "image", src: "img/showreel_thumbnail.png" },
-                        { type: "image", src: "img/showreel_evidencia_02.png" }
+                        { type: "image", src: "img/showreel_evidencia_02.png" },
+                        { type: "nav_btn", btnText: "[ IR A SHOWREEL ]", targetPanel: "o1", accent: "orange" }
                     ],
                     evidence: "Concluido (Archivo de video activo y enlace a YouTube)", tools: "After Effects, Illustrator",
                     skills: [
@@ -670,6 +651,7 @@
 
             function closeSections() {
                 playSectionExit();
+                if(typeof stopAllVideos === 'function') stopAllVideos();
                 const activeSection = document.querySelector('.content-section.visible');
                 if (activeSection) {
                     activeSection.classList.remove('visible');
@@ -681,6 +663,30 @@
                 }, 400);
             }
             if (closeBtn) closeBtn.addEventListener('click', closeSections);
+
+            const btnToVideoDetails = document.getElementById('btn-to-video-details');
+            if (btnToVideoDetails) {
+                btnToVideoDetails.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    new Audio('audio/click.mp3').play().catch(()=>{});
+                    if(typeof stopAllVideos === 'function') stopAllVideos();
+                    
+                    document.getElementById('o1').classList.remove('visible');
+                    panels.forEach(p => p.classList.remove('active-panel'));
+                    
+                    const videoPanel = document.querySelector('.panel[data-target="g"]');
+                    if (videoPanel) {
+                        videoPanel.click();
+                    }
+                    
+                    setTimeout(() => {
+                        const showreelCard = document.querySelector('.project-card[data-project-id="showreel"]');
+                        if (showreelCard) {
+                            showreelCard.click();
+                        }
+                    }, 800);
+                });
+            }
 
             if (projectCards && projectCards.length > 0) {
                 projectCards.forEach(card => {
@@ -697,32 +703,26 @@
                             if (projectData.accent === 'orange') {
                                 modalContainer.className = 'bg-[#08080c]/98 border p-8 rounded max-w-4xl w-full flex flex-col relative shadow-2xl mx-4 my-8 theme-orange border-[#ff7700]/70';
                                 modalContainer.style.boxShadow = '0 0 35px rgba(255, 119, 0, 0.4), inset 0 0 15px rgba(255, 119, 0, 0.15)';
-                                
                                 modalHeader.style.borderColor = 'rgba(255, 119, 0, 0.4)';
                                 document.getElementById('modal-top-details').style.borderColor = 'rgba(255, 119, 0, 0.35)';
                                 document.getElementById('modal-skills-box').style.borderColor = 'rgba(255, 119, 0, 0.35)';
                                 document.getElementById('modal-system-footer').className = 'border-t border-gray-800 pt-4 flex justify-between items-center text-xs font-mono text-orange-500/70 font-bold';
-                                
                                 if (mLogId) { mLogId.className = 'text-xs text-orange-400 block tracking-widest font-bold'; mLogId.style.textShadow = '0 0 8px rgba(255, 119, 0, 0.6)'; }
                                 if (mTitle) { mTitle.style.textShadow = '0 0 10px #ff7700, 0 0 20px rgba(255, 119, 0, 0.4)'; }
                                 if (mHex) { mHex.className = 'text-[10px] text-orange-500 font-bold leading-normal !font-mono'; mHex.style.textShadow = '0 0 4px rgba(255, 119, 0, 0.4)'; }
                                 if (modalCloseBtn) { modalCloseBtn.className = 'text-xs border border-red-500/40 hover:border-red-500 bg-red-950/30 hover:bg-red-950/60 text-red-500 hover:text-red-400 py-2 px-4 rounded tracking-widest transition-all font-bold whitespace-nowrap flex-shrink-0'; modalCloseBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.2)'; }
-
                                 document.getElementById('modal-sidebar').className = 'bg-black/40 border border-orange-500/25 p-4 rounded text-xs text-orange-400 flex flex-col justify-between space-y-4 h-fit md:sticky md:top-4';
                             } else {
                                 modalContainer.className = 'bg-[#08080c]/98 border p-8 rounded max-w-4xl w-full flex flex-col relative shadow-2xl mx-4 my-8 theme-blue border-[#00a2ff]/70';
                                 modalContainer.style.boxShadow = '0 0 35px rgba(0, 162, 255, 0.4), inset 0 0 15px rgba(0, 162, 255, 0.15)';
-                                
                                 modalHeader.style.borderColor = 'rgba(0, 162, 255, 0.4)';
                                 document.getElementById('modal-top-details').style.borderColor = 'rgba(0, 162, 255, 0.35)';
                                 document.getElementById('modal-skills-box').style.borderColor = 'rgba(0, 162, 255, 0.35)';
                                 document.getElementById('modal-system-footer').className = 'border-t border-gray-800 pt-4 flex justify-between items-center text-xs font-mono text-blue-500/70 font-bold';
-                                
                                 if (mLogId) { mLogId.className = 'text-xs text-blue-400 block tracking-widest font-bold'; mLogId.style.textShadow = '0 0 8px rgba(0, 162, 255, 0.6)'; }
                                 if (mTitle) { mTitle.style.textShadow = '0 0 10px #00a2ff, 0 0 20px rgba(0, 162, 255, 0.4)'; }
                                 if (mHex) { mHex.className = 'text-[10px] text-blue-500 font-bold leading-normal !font-mono'; mHex.style.textShadow = '0 0 4px rgba(0, 162, 255, 0.4)'; }
                                 if (modalCloseBtn) { modalCloseBtn.className = 'text-xs border border-red-500/40 hover:border-red-500 bg-red-950/30 hover:bg-red-950/60 text-red-500 hover:text-red-400 py-2 px-4 rounded tracking-widest transition-all font-bold whitespace-nowrap flex-shrink-0'; modalCloseBtn.style.boxShadow = '0 0 10px rgba(255, 51, 51, 0.2)'; }
-
                                 document.getElementById('modal-sidebar').className = 'bg-black/40 border border-blue-500/25 p-4 rounded text-xs text-blue-400 flex flex-col justify-between space-y-4 h-fit md:sticky md:top-4';
                             }
 
@@ -733,12 +733,10 @@
                             if (mEvidence) mEvidence.innerText = projectData.evidence;
                             if (mTools) mTools.innerText = projectData.tools;
 
-                            // RENDERING ENGINE
                             if (mGallery) {
                                 mGallery.innerHTML = '';
                                 projectData.media.forEach((item, index) => {
                                     
-                                    // 1) BOTON VISUALIZADOR DE TAROT (LIGHTBOX)
                                     if (item.type === 'gallery_btn') {
                                         const btnWrapper = document.createElement('div');
                                         btnWrapper.className = 'w-full mb-6 flex justify-center border border-dashed rounded p-2';
@@ -751,12 +749,8 @@
                                         btn.style.backgroundColor = 'rgba(0,0,0,0.8)';
                                         btn.innerText = item.btnText;
 
-                                        btn.onmouseenter = () => {
-                                            btn.style.backgroundColor = projectData.accent === 'orange' ? 'rgba(255, 119, 0, 0.2)' : 'rgba(0, 162, 255, 0.2)';
-                                        };
-                                        btn.onmouseleave = () => {
-                                            btn.style.backgroundColor = 'rgba(0,0,0,0.8)';
-                                        };
+                                        btn.onmouseenter = () => { btn.style.backgroundColor = projectData.accent === 'orange' ? 'rgba(255, 119, 0, 0.2)' : 'rgba(0, 162, 255, 0.2)'; };
+                                        btn.onmouseleave = () => { btn.style.backgroundColor = 'rgba(0,0,0,0.8)'; };
 
                                         btn.onclick = (e) => {
                                             e.stopPropagation();
@@ -817,15 +811,52 @@
                                             lbOverlay.appendChild(counter);
                                             
                                             document.body.appendChild(lbOverlay);
-                                            requestAnimationFrame(() => {
-                                                lbOverlay.classList.add('opacity-100');
-                                            });
+                                            requestAnimationFrame(() => { lbOverlay.classList.add('opacity-100'); });
+                                        };
+                                        
+                                        btnWrapper.appendChild(btn);
+                                        mGallery.appendChild(btnWrapper);
+
+                                    } else if (item.type === 'nav_btn') {
+                                        const btnWrapper = document.createElement('div');
+                                        btnWrapper.className = 'w-full mt-2 mb-4 flex justify-center';
+                                        
+                                        const btn = document.createElement('button');
+                                        btn.className = 'w-full py-4 border font-bold font-mono text-sm tracking-widest uppercase transition-all duration-300';
+                                        btn.style.borderColor = item.accent === 'orange' ? 'rgba(255, 119, 0, 0.5)' : 'rgba(0, 162, 255, 0.5)';
+                                        btn.style.color = item.accent === 'orange' ? '#ff7700' : '#00a2ff';
+                                        btn.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                                        btn.style.boxShadow = item.accent === 'orange' ? '0 0 15px rgba(255, 119, 0, 0.2)' : '0 0 15px rgba(0, 162, 255, 0.2)';
+                                        
+                                        btn.onmouseenter = () => {
+                                            btn.style.backgroundColor = item.accent === 'orange' ? 'rgba(255, 119, 0, 0.2)' : 'rgba(0, 162, 255, 0.2)';
+                                            btn.style.boxShadow = item.accent === 'orange' ? '0 0 25px rgba(255, 119, 0, 0.4)' : '0 0 25px rgba(0, 162, 255, 0.4)';
+                                        };
+                                        btn.onmouseleave = () => {
+                                            btn.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                                            btn.style.boxShadow = item.accent === 'orange' ? '0 0 15px rgba(255, 119, 0, 0.2)' : '0 0 15px rgba(0, 162, 255, 0.2)';
+                                        };
+                                        
+                                        btn.innerText = item.btnText;
+                                        btn.onclick = (e) => {
+                                            e.stopPropagation();
+                                            new Audio('audio/click.mp3').play().catch(()=>{});
+                                            if(typeof stopAllVideos === 'function') stopAllVideos();
+                                            closeProjectModal(); 
+                                            
+                                            setTimeout(() => {
+                                                const targetPanel = document.querySelector(`.panel[data-target="${item.targetPanel}"]`);
+                                                if(targetPanel) {
+                                                    document.getElementById('g').classList.remove('visible');
+                                                    panels.forEach(p => p.classList.remove('active-panel'));
+                                                    targetPanel.click();
+                                                }
+                                            }, 400); 
                                         };
                                         
                                         btnWrapper.appendChild(btn);
                                         mGallery.appendChild(btnWrapper);
                                         
-                                    // 2) BOTON FLIPBOOK (LINK EXTERNO)
                                     } else if (item.type === 'link_btn') {
                                         const btnWrapper = document.createElement('div');
                                         btnWrapper.className = 'w-full mt-2 mb-4 flex justify-center';
@@ -856,7 +887,6 @@
                                         btnWrapper.appendChild(btn);
                                         mGallery.appendChild(btnWrapper);
                                         
-                                    // 3) RENDERIZADO NORMAL DE MEDIA (VIDEOS Y FOTOS)
                                     } else {
                                         const wrapper = document.createElement('div');
                                         wrapper.className = 'rounded border overflow-hidden relative bg-black/40 group';
@@ -896,7 +926,6 @@
                                             } else {
                                                 imgEl.className = 'w-full aspect-video object-cover bg-black'; 
                                             }
-                                            
                                             wrapper.appendChild(imgEl);
                                         }
                                         mGallery.appendChild(wrapper);
@@ -918,6 +947,7 @@
 
             function closeProjectModal() {
                 playModalExit();
+                if(typeof stopAllVideos === 'function') stopAllVideos();
                 if (projectModal) projectModal.classList.remove('visible');
                 const activeSection = document.querySelector('.content-section.visible');
                 if (activeSection) activeSection.style.overflowY = 'auto';
